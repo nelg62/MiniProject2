@@ -6,7 +6,7 @@ const userRoutes = require("./routes/userDataRoutes");
 const app = express();
 const port = 3083;
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
     origin: "http://localhost:3000",

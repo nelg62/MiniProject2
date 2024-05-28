@@ -10,25 +10,25 @@ import Avatar from "@mui/material/Avatar";
 import { Typography } from "@mui/material";
 import { UserStyles } from "../../themes/makingStyles";
 import BasicModal from "./Modal";
+import AddUserForm from "./AddUserForm";
 
-export default function CheckboxListSecondary() {
+export default function CheckboxListSecondary({ users }) {
   const [checked, setChecked] = React.useState([]);
-  const [users, setUsers] = React.useState([]);
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
 
-  React.useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("http://localhost:3083/users/api/data");
-        const data = await response.json();
-        setUsers(data.users);
-      } catch (error) {
-        console.error("error findinf users", error);
-      }
-    };
-    fetchUsers();
-  }, []);
+  // React.useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3083/users/api/data");
+  //       const data = await response.json();
+  //       setUsers(data.users);
+  //     } catch (error) {
+  //       console.error("error findinf users", error);
+  //     }
+  //   };
+  //   fetchUsers();
+  // }, []);
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -91,11 +91,11 @@ export default function CheckboxListSecondary() {
           );
         })}
       </List>
-      <BasicModal
+      {/* <BasicModal
         open={openModal}
         onClose={handleCloseModal}
         userId={selectedUserId}
-      />
+      /> */}
     </>
   );
 }

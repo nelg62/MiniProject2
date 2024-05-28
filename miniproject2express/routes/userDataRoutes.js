@@ -7,7 +7,7 @@ let users = [];
 router.get("/api/data", async (req, res) => {
   try {
     const response = await axios.get("http://dummyjson.com/users?limit=5");
-    console.log(response.data.users);
+    // console.log(response.data.users);
 
     users = response.data.users;
     const data = response.data;
@@ -26,6 +26,19 @@ router.get("/api/data/:userId", (req, res) => {
   user
     ? res.status(200).json({ result: user })
     : res.status(404).json({ result: `User ${userId} not found` });
+});
+
+router.post("/api/data", (req, res) => {
+  console.log("req.body", req.body);
+  const newUser = {
+    id: users.length + 1,
+    firstName: req.body.first,
+    lastName: req.body.last,
+    email: req.body.img,
+    phone: req.body.phone,
+  };
+  users.push(newUser);
+  res.status(200).json(newUser);
 });
 
 module.exports = router;
