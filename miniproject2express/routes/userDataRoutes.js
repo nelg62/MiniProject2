@@ -29,7 +29,7 @@ router.get("/api/data/:userId", (req, res) => {
 });
 
 router.post("/api/data", (req, res) => {
-  console.log("req.body", req.body);
+  // console.log("req.body", req.body);
   const newUser = {
     id: users.length + 1,
     firstName: req.body.first,
@@ -39,6 +39,7 @@ router.post("/api/data", (req, res) => {
   };
   users.push(newUser);
   res.status(200).json(newUser);
+  console.log(users);
 });
 
 module.exports = router;

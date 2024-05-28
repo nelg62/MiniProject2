@@ -34,7 +34,12 @@ export default function AddUserModal({ onUserAdded }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddUserForm></AddUserForm>
+          <AddUserForm
+            onUserAdded={(user) => {
+              onUserAdded(user);
+              handleClose();
+            }}
+          ></AddUserForm>
         </Box>
       </Modal>
     </div>
