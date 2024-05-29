@@ -9,27 +9,36 @@ function AddUserForm({ onUserAdded }) {
   const [phone, setPhone] = useState("");
   const defaultImg = "user.png";
 
+  // handle submit of form data
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const addCharacterToForm = {
-      first: e.target.FirstName.value,
-      last: e.target.LastName.value,
-      img: img || defaultImg,
-      phone: e.target.Phone.value,
+    // set key and values from vales of data from form and set to new object newUser
+    const newUser = {
+      firstName: first,
+      lastName: last,
+      image: img || defaultImg,
+      phone: phone,
     };
-    console.log("addCcharacter to form", addCharacterToForm);
+    console.log("addCcharacter to form", newUser);
     try {
+      // set variable response for express server to post data to server
       const response = await fetch("http://localhost:3083/users/api/data", {
+        // method for posting post
         method: "POST",
+        // headers so server can understand what is being sent
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(addCharacterToForm),
+        // actial content being sent stringifyed vwertion of newUser object
+        body: JSON.stringify(newUser),
       });
 
+      // check to make sure data was receieved ok otherwise fail / error
       if (response.ok) {
+        // get response in json format and store in variable result
         const result = await response.json();
         console.log("User added:", result);
+        // if onUserAdded exists pust results through to AddUserModal then exentually to users/page which is handleUserAdded and will push user to express server users array
         if (onUserAdded) {
           onUserAdded(result);
         }
@@ -40,20 +49,27 @@ function AddUserForm({ onUserAdded }) {
       console.error("Error adding user:", error);
     }
 
+    // clear states for form
     setFirst("");
     setLast("");
     setImg("");
     setPhone("");
   };
 
+  // find the image when uploaded
   const handleImageChange = (e) => {
+    // create variable file and add the value of the first file to it
     const file = e.target.files[0];
+
+    // create a variable reader for a new FileReader() this is used to read files so people can upload files from any location on there computer
     const reader = new FileReader();
 
+    // read the file path and set the result to the state of setImg
     reader.onloadend = () => {
       setImg(reader.result);
     };
 
+    // if the file exists then convert the path of the file to a url
     if (file) {
       reader.readAsDataURL(file);
     }

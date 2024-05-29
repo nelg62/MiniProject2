@@ -15,24 +15,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useUserContext } from "@/context/UserContext";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function SignIn() {
@@ -42,9 +24,11 @@ export default function SignIn() {
 
   const { currentUser, handleUpdateUser } = useUserContext();
 
+  // on submit of login
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    // check password requirements
     if (userPassword.length < 5) {
       setSubmitResult("Password must be at least 5 Characters long");
     } else if (userPassword === userEmail) {
@@ -53,19 +37,14 @@ export default function SignIn() {
       setSubmitResult("Successful Login");
       handleUpdateUser({ email: userEmail });
     }
-
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
   };
 
+  // if logged in
   if (currentUser.email)
     return (
       <>
         <p>Welcome {currentUser.email}!</p>
-        <button>Log Out</button>
+        <button onClick={() => handleUpdateUser({})}>Log Out</button>
       </>
     );
 
@@ -146,7 +125,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

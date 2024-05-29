@@ -8,6 +8,7 @@ export default function Login() {
       <p>
         Please Login Here <Link href="/">home</Link>.
       </p>
+      {/* LoginPage component */}
       <SignUp></SignUp>
     </div>
   );

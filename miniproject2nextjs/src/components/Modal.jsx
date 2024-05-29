@@ -30,13 +30,17 @@ export default function BasicModal({ open, onClose, userId }) {
         const userData = await response.json();
         console.log(userData);
         setUser(userData);
+        localStorage.setItem(`user_${userId}`, JSON.stringify(userData));
       } catch (error) {
         console.error("error gettign user details", error);
       }
     };
-
-    if (open && userId) {
+    const storedUserData = localStorage.getItem(`user_${userId}`);
+    console.log("Stored user data:", storedUserData);
+    if (open && userId && (!user || !storedUserData)) {
       fetchUserDetails();
+    } else if (storedUserData) {
+      setUser(JSON.parse(storedUserData));
     }
   }, [open, userId]);
 
@@ -59,6 +63,7 @@ export default function BasicModal({ open, onClose, userId }) {
               <img
                 src={user.result.image}
                 alt={`picture of ${user.result.firstName}`}
+                style={{ height: "128px", width: "128px" }}
               ></img>
             ) : (
               ""
@@ -82,12 +87,12 @@ export default function BasicModal({ open, onClose, userId }) {
             {user ? `Phone: ${user.result.phone}` : ""}
           </Typography>
 
-          <Typography sx={UserStyles.textColor}>
+          {/* <Typography sx={UserStyles.textColor}>
             {user ? `Works at: ${user.result.company.name}` : ""}
           </Typography>
           <Typography sx={UserStyles.textColor}>
             {user ? `Job Title: ${user.result.company.title}` : ""}
-          </Typography>
+          </Typography> */}
         </Box>
       </Modal>
     </div>

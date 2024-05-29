@@ -39,7 +39,7 @@ export default function AddUserModal({ onUserAdded }) {
               onUserAdded(user);
               handleClose();
             }}
-          ></AddUserForm>
+          />
         </Box>
       </Modal>
     </div>

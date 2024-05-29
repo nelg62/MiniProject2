@@ -17,19 +17,6 @@ export default function CheckboxListSecondary({ users }) {
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
 
-  // React.useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:3083/users/api/data");
-  //       const data = await response.json();
-  //       setUsers(data.users);
-  //     } catch (error) {
-  //       console.error("error findinf users", error);
-  //     }
-  //   };
-  //   fetchUsers();
-  // }, []);
-
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -91,11 +78,11 @@ export default function CheckboxListSecondary({ users }) {
           );
         })}
       </List>
-      {/* <BasicModal
+      <BasicModal
         open={openModal}
         onClose={handleCloseModal}
         userId={selectedUserId}
-      /> */}
+      />
     </>
   );
 }
