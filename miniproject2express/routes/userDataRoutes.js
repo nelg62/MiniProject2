@@ -27,6 +27,10 @@ router.get("/api/data/:userId", (req, res) => {
   // create userID variable and set it to the request user id
   const userId = req.params.userId;
   console.log(`Received userId: ${userId}`);
+  console.log(
+    "user",
+    users.map((user) => user.id)
+  );
   // set a variable user by finding a user with the matching id in the users array
   const user = users.find((user) => user.id == userId);
   // check if user exists and then if they do return user info and if not then return not found
