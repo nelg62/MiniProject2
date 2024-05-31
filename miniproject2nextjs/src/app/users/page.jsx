@@ -1,3 +1,5 @@
+// users/page.jsx
+
 "use client";
 import CheckboxListSecondary from "@/components/UserList";
 import Link from "next/link";
@@ -26,10 +28,12 @@ export default function Users() {
 
   // handle adding users from AddUserModal
   const handleUserAdded = (newUser) => {
-    // create variable updatedUsers then copy ...users and add newusers to the array
-    const updatedUsers = [...users, newUser];
-    // update state of users to updatedUsers
-    setUsers(updatedUsers);
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
+  // handle deleting users sent to UserList
+  const handleDeleteUser = (userId) => {
+    setUsers(users.filter((user) => user.id !== userId));
   };
 
   return (
@@ -40,7 +44,7 @@ export default function Users() {
       </p>
       <ThemeProvider theme={UserStyles}>
         <AddUserModal onUserAdded={handleUserAdded} />
-        <CheckboxListSecondary users={users} />
+        <CheckboxListSecondary users={users} onDeleteUser={handleDeleteUser} />
       </ThemeProvider>
     </div>
   );

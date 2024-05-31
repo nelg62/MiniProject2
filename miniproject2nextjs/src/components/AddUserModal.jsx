@@ -19,15 +19,11 @@ const style = {
   color: "black",
 };
 
+// modual for the add user button and showing the users AddUserForm
 export default function AddUserModal({ onUserAdded }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const handleUserAdded = (newUser) => {
-    onUserAdded(newUser);
-    handleClose();
-  };
 
   return (
     <div>
@@ -39,7 +35,7 @@ export default function AddUserModal({ onUserAdded }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddUserForm onUserAdded={handleUserAdded} />
+          <AddUserForm onUserAdded={onUserAdded} />
         </Box>
       </Modal>
     </div>

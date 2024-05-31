@@ -1,10 +1,10 @@
-"use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { UserStyles } from "../../themes/makingStyles";
+import AddUserForm from "./AddUserForm";
 
 const style = {
   position: "absolute",
@@ -18,10 +18,11 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal({ open, onClose, userId }) {
-  const [user, setUser] = React.useState(null);
+export default function BasicModal({ open, onClose, userId, user }) {
+  const [userData, setUserData] = React.useState(user || {});
   const [loading, setLoading] = React.useState(false);
 
+  // Effect Hook to get user data when the modal is oppened
   React.useEffect(() => {
     let isMounted = true;
     const fetchUserDetails = async () => {
@@ -36,7 +37,7 @@ export default function BasicModal({ open, onClose, userId }) {
         const userData = await response.json();
         if (isMounted) {
           console.log(userData);
-          setUser(userData.result); // Update to userData.result
+          setUserData(userData.result); // Update to userData.result
         }
       } catch (error) {
         console.error("Error getting user details", error);
@@ -56,9 +57,10 @@ export default function BasicModal({ open, onClose, userId }) {
     };
   }, [open, userId]);
 
+  // funcion for closing modal
   const handleClose = () => {
     onClose();
-    setUser(null);
+    setUserData({});
   };
 
   return (
@@ -71,12 +73,12 @@ export default function BasicModal({ open, onClose, userId }) {
       >
         <Box sx={style}>
           <Typography sx={UserStyles.textColor}>
-            {user ? (
+            {userData ? (
               <img
-                src={user.image}
-                alt={`picture of ${user.firstName}`}
+                src={userData.image}
+                alt={`picture of ${userData.firstName}`}
                 style={{ height: "128px", width: "128px" }}
-              ></img>
+              />
             ) : (
               ""
             )}
@@ -88,21 +90,16 @@ export default function BasicModal({ open, onClose, userId }) {
             component="h2"
             sx={UserStyles.textColor}
           >
-            {user ? `${user.firstName} ${user.lastName}` : "Loading..."}
+            {userData
+              ? `${userData.firstName} ${userData.lastName}`
+              : "Loading..."}
           </Typography>
           <Typography id="modal-modal-description" sx={UserStyles.textColor}>
-            {user ? `Email: ${user.email}` : ""}
+            {userData ? `Email: ${userData.email}` : ""}
           </Typography>
           <Typography sx={UserStyles.textColor}>
-            {user ? `Phone: ${user.phone}` : ""}
+            {userData ? `Phone: ${userData.phone}` : ""}
           </Typography>
-
-          {/* <Typography sx={UserStyles.textColor}>
-            {user ? `Works at: ${user.company.name}` : ""}
-          </Typography>
-          <Typography sx={UserStyles.textColor}>
-            {user ? `Job Title: ${user.company.title}` : ""}
-          </Typography> */}
         </Box>
       </Modal>
     </div>

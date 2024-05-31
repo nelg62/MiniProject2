@@ -1,3 +1,5 @@
+// UserList.jsx (CheckboxListSecondary)
+
 "use client";
 import * as React from "react";
 import List from "@mui/material/List";
@@ -12,11 +14,17 @@ import { UserStyles } from "../../themes/makingStyles";
 import BasicModal from "./Modal";
 import AddUserForm from "./AddUserForm";
 
-export default function CheckboxListSecondary({ users }) {
+export default function CheckboxListSecondary({ users, onDeleteUser }) {
+  // State to manage checked users
   const [checked, setChecked] = React.useState([]);
+  // State to manage modal open/close status
   const [openModal, setOpenModal] = React.useState(false);
+  // State to manage the ID of the selected user
   const [selectedUserId, setSelectedUserId] = React.useState(null);
+  // State to manage the data of the selected user
+  const [selectedUser, setSelectedUser] = React.useState(null);
 
+  // handle toggle of checkbox (not being used at the moment is part of the list component)
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
@@ -30,16 +38,20 @@ export default function CheckboxListSecondary({ users }) {
     setChecked(newChecked);
   };
 
-  const handleListItemClick = (userid) => {
-    setSelectedUserId(userid);
+  //  handle click on list item to open modal
+  const handleListItemClick = (userId) => {
+    setSelectedUserId(userId);
     setOpenModal(true);
   };
 
+  // handle close of modal
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedUserId(null);
+    setSelectedUser(null);
   };
 
+  // handle deleting user
   const handleDelete = async (userId) => {
     try {
       const response = await fetch(
@@ -51,9 +63,9 @@ export default function CheckboxListSecondary({ users }) {
       if (!response.ok) {
         throw new Error("failed to delete");
       }
-      const result = await response.json();
-      console.log(result.message);
-      users.filter((user) => user.id !== userId);
+      console.log(`User ${userId} deleted successfully`);
+      // Call the onDeleteUser function passed from the parent component to update the user list
+      onDeleteUser(userId);
     } catch (error) {
       console.error("error deleting user", error);
     }
@@ -72,19 +84,13 @@ export default function CheckboxListSecondary({ users }) {
               key={user.id}
               secondaryAction={
                 <>
+                  <Button onClick={() => handleDelete(user.id)}>Delete</Button>
                   <Checkbox
                     edge="end"
                     onChange={handleToggle(user.id)}
                     checked={checked.indexOf(user.id) !== -1}
                     inputProps={{ "aria-labelledby": labelId }}
                   />
-                  <Button
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </Button>
                 </>
               }
               disablePadding
@@ -110,6 +116,7 @@ export default function CheckboxListSecondary({ users }) {
         open={openModal}
         onClose={handleCloseModal}
         userId={selectedUserId}
+        user={selectedUser}
       />
     </>
   );
