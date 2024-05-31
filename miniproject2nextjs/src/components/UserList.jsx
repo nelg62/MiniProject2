@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { UserStyles } from "../../themes/makingStyles";
 import BasicModal from "./Modal";
 import AddUserForm from "./AddUserForm";
@@ -40,6 +40,25 @@ export default function CheckboxListSecondary({ users }) {
     setSelectedUserId(null);
   };
 
+  const handleDelete = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("failed to delete");
+      }
+      const result = await response.json();
+      console.log(result.message);
+      users.filter((user) => user.id !== userId);
+    } catch (error) {
+      console.error("error deleting user", error);
+    }
+  };
+
   return (
     <>
       <List
@@ -52,12 +71,21 @@ export default function CheckboxListSecondary({ users }) {
             <ListItem
               key={user.id}
               secondaryAction={
-                <Checkbox
-                  edge="end"
-                  onChange={handleToggle(user.id)}
-                  checked={checked.indexOf(user.id) !== -1}
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
+                <>
+                  <Checkbox
+                    edge="end"
+                    onChange={handleToggle(user.id)}
+                    checked={checked.indexOf(user.id) !== -1}
+                    inputProps={{ "aria-labelledby": labelId }}
+                  />
+                  <Button
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </Button>
+                </>
               }
               disablePadding
             >

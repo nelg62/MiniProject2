@@ -1,16 +1,29 @@
 const axios = require("axios");
 const { v4: uuidv4 } = require("uuid");
 
-let users = [];
+let allUsers = [];
+
+// function to get users from external API
+const fetchExternalUsers = async () => {
+  try {
+    // axious get data for users from dummyjson and store in variable response
+    const response = await axios.get("http://dummyjson.com/users?limit=5");
+
+    // store the user data in the empty array externalUsers
+    allUsers = [...allUsers, ...response.data.users];
+
+    // console any errors
+  } catch (error) {
+    console.error("error fetching external users", error);
+  }
+};
+
+// on load of express server get get the users from the external api and store in externalUsers array
+fetchExternalUsers();
 
 const getUsers = async (req, res) => {
   try {
-    const response = await axios.get("http://dummyjson.com/users?limit=5");
-    const externalUsers = response.data.users;
-
-    // Combine external users with in-memory users
-    const combinedUsers = [...externalUsers, ...users];
-    res.json({ users: combinedUsers });
+    res.json({ users: allUsers });
   } catch (error) {
     console.error(error);
     res.status(500).send(`An error occurred: ${error.message}`);
@@ -22,17 +35,10 @@ const getUserById = async (req, res) => {
   console.log(`Received UserId ${userId}`);
 
   // Check in-memory users first
-  let user = users.find((user) => user.id === userId);
+  const user = allUsers.find((user) => user.id === parseInt(userId, 10));
 
   if (!user) {
-    try {
-      // If not found in in-memory users, check external API
-      const response = await axios.get(`http://dummyjson.com/users/${userId}`);
-      user = response.data;
-    } catch (error) {
-      console.error(error);
-      return res.status(404).json({ result: `User ${userId} not found` });
-    }
+    return res.status(404).json({ result: `User ${userId} not found` });
   }
 
   res.status(200).json({ result: user });
@@ -46,16 +52,36 @@ const addUser = (req, res) => {
   }
 
   const newUser = {
-    id: uuidv4(),
+    id: parseInt(uuidv4().split("-")[0], 16),
     firstName,
     lastName,
     image,
     phone,
   };
 
-  users.push(newUser);
+  allUsers.push(newUser);
   res.status(200).json(newUser);
   console.log(users);
 };
 
-module.exports = { getUsers, getUserById, addUser };
+const deleteUser = (req, res) => {
+  const userId = req.params.userId;
+  console.log(`Received UserId ${userId}`);
+
+  // Find the index of the user in the array
+  const userIndex = allUsers.findIndex(
+    (user) => user.id === parseInt(userId, 10)
+  );
+
+  if (userIndex !== -1) {
+    // Remove the user from the array
+    allUsers.splice(userIndex, 1);
+    console.log(`User ${userId} deleted. Users array:`, allUsers);
+    res.status(200).json({ message: `User ${userId} deleted` });
+  } else {
+    console.error(`User ${userId} not found`);
+    res.status(404).json({ message: `User ${userId} not found` });
+  }
+};
+
+module.exports = { getUsers, getUserById, addUser, deleteUser };
