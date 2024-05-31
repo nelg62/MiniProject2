@@ -11,6 +11,8 @@ app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
     origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type"],
   })
 );
 app.use("/", express.static("public"));

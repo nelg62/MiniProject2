@@ -16,20 +16,7 @@ export default function Users() {
         // set response to json and store in variable data
         const data = await response.json();
 
-        // get the localstorage item users then JSON.parse covering it from a string to objects or return and empty array or nothing is there
-        const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-
-        // create a new map firat make a copy of the api user data with ...data.users and merge with local data ...storedusers. then map the array created from the combined arrays by using the userID and the user object for the array information. values grabs the values from the mapped object and creates a new array removing duplicates if there are any
-        const combinedUsers = [
-          ...new Map(
-            [...data.users, ...storedUsers].map((user) => [user.id, user])
-          ).values(),
-        ];
-
-        // set the list of combineduserss into state
-        setUsers(combinedUsers);
-        // add teh list of combined users into local storage with a key users
-        localStorage.setItem("users", JSON.stringify(combinedUsers));
+        setUsers(data.users);
       } catch (error) {
         console.error("Error finding users", error);
       }
@@ -43,8 +30,6 @@ export default function Users() {
     const updatedUsers = [...users, newUser];
     // update state of users to updatedUsers
     setUsers(updatedUsers);
-    // update local storage to updated users
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
   };
 
   return (

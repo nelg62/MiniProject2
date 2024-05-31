@@ -24,6 +24,11 @@ export default function AddUserModal({ onUserAdded }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const handleUserAdded = (newUser) => {
+    onUserAdded(newUser);
+    handleClose();
+  };
+
   return (
     <div>
       <Button onClick={handleOpen}>Add User</Button>
@@ -34,12 +39,7 @@ export default function AddUserModal({ onUserAdded }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddUserForm
-            onUserAdded={(user) => {
-              onUserAdded(user);
-              handleClose();
-            }}
-          />
+          <AddUserForm onUserAdded={handleUserAdded} />
         </Box>
       </Modal>
     </div>

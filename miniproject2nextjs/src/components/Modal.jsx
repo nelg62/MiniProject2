@@ -20,28 +20,40 @@ const style = {
 
 export default function BasicModal({ open, onClose, userId }) {
   const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
+    let isMounted = true;
     const fetchUserDetails = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `http://localhost:3083/users/api/data/${userId}`
         );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user details");
+        }
         const userData = await response.json();
-        console.log(userData);
-        setUser(userData);
-        localStorage.setItem(`user_${userId}`, JSON.stringify(userData));
+        if (isMounted) {
+          console.log(userData);
+          setUser(userData.result); // Update to userData.result
+        }
       } catch (error) {
-        console.error("error gettign user details", error);
+        console.error("Error getting user details", error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
-    const storedUserData = localStorage.getItem(`user_${userId}`);
-    console.log("Stored user data:", storedUserData);
-    if (open && userId && (!user || !storedUserData)) {
+
+    if (open && userId) {
       fetchUserDetails();
-    } else if (storedUserData) {
-      setUser(JSON.parse(storedUserData));
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [open, userId]);
 
   const handleClose = () => {
@@ -61,8 +73,8 @@ export default function BasicModal({ open, onClose, userId }) {
           <Typography sx={UserStyles.textColor}>
             {user ? (
               <img
-                src={user.result.image}
-                alt={`picture of ${user.result.firstName}`}
+                src={user.image}
+                alt={`picture of ${user.firstName}`}
                 style={{ height: "128px", width: "128px" }}
               ></img>
             ) : (
@@ -76,22 +88,20 @@ export default function BasicModal({ open, onClose, userId }) {
             component="h2"
             sx={UserStyles.textColor}
           >
-            {user
-              ? `${user.result.firstName} ${user.result.lastName}`
-              : "Loading..."}
+            {user ? `${user.firstName} ${user.lastName}` : "Loading..."}
           </Typography>
           <Typography id="modal-modal-description" sx={UserStyles.textColor}>
-            {user ? `Email: ${user.result.email}` : ""}
+            {user ? `Email: ${user.email}` : ""}
           </Typography>
           <Typography sx={UserStyles.textColor}>
-            {user ? `Phone: ${user.result.phone}` : ""}
+            {user ? `Phone: ${user.phone}` : ""}
           </Typography>
 
           {/* <Typography sx={UserStyles.textColor}>
-            {user ? `Works at: ${user.result.company.name}` : ""}
+            {user ? `Works at: ${user.company.name}` : ""}
           </Typography>
           <Typography sx={UserStyles.textColor}>
-            {user ? `Job Title: ${user.result.company.title}` : ""}
+            {user ? `Job Title: ${user.company.title}` : ""}
           </Typography> */}
         </Box>
       </Modal>

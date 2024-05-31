@@ -19,7 +19,6 @@ function AddUserForm({ onUserAdded }) {
       image: img || defaultImg,
       phone: phone,
     };
-    console.log("addCcharacter to form", newUser);
     try {
       // set variable response for express server to post data to server
       const response = await fetch("http://localhost:3083/users/api/data", {
@@ -38,10 +37,8 @@ function AddUserForm({ onUserAdded }) {
         // get response in json format and store in variable result
         const result = await response.json();
         console.log("User added:", result);
+        onUserAdded(result);
         // if onUserAdded exists pust results through to AddUserModal then exentually to users/page which is handleUserAdded and will push user to express server users array
-        if (onUserAdded) {
-          onUserAdded(result);
-        }
       } else {
         console.error("Error adding user:", response.statusText);
       }
