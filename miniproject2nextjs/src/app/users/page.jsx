@@ -1,4 +1,5 @@
 "use client";
+import AddUserModal from "@/components/AddUserModal";
 import CheckboxListSecondary from "@/components/UserList";
 import { useEffect, useState } from "react";
 
@@ -22,6 +23,11 @@ export default function Users() {
     fetchUsers();
   }, []);
 
+  // handle adding users passed to AddUserModal
+  const handleUserAdded = (newUser) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
   // handle delete users passed to UserList
   const handleDeleteUser = (userId) => {
     setUsers(users.filter((user) => user.id !== userId));
@@ -31,6 +37,8 @@ export default function Users() {
   return (
     <div>
       <h1>Users</h1>
+      {/* display AddUserModal button and pass prop handleUserAdded  */}
+      <AddUserModal onUserAdded={handleUserAdded} />
       {/* UserList show users pass users to display */}
       <CheckboxListSecondary users={users} onDeleteUser={handleDeleteUser} />
     </div>
