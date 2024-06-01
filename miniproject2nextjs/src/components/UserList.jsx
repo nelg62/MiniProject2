@@ -6,9 +6,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
-export default function CheckboxListSecondary({ users }) {
+// recieve users prop and onDeleteUser from users/page
+export default function CheckboxListSecondary({ users, onDeleteUser }) {
   const [checked, setChecked] = React.useState([1]);
 
   const handleToggle = (value) => () => {
@@ -24,15 +25,43 @@ export default function CheckboxListSecondary({ users }) {
     setChecked(newChecked);
   };
 
+  // handle delete user function
+  const handleDelete = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("failed to delete");
+      }
+      console.log(`user ${userId} deleted successfully`);
+      onDeleteUser(userId);
+    } catch (error) {
+      console.error("error deleting user", error);
+    }
+  };
+
   return (
     <List
       dense
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
     >
+      {/* mapp users to show data on list */}
       {users.map((user) => {
         const labelId = `checkbox-list-secondary-label-${user.id}`;
         return (
-          <ListItem key={user.id} disablePadding>
+          <ListItem
+            key={user.id}
+            secondaryAction={
+              <>
+                <Button onClick={() => handleDelete(user.id)}>Delete</Button>
+              </>
+            }
+            disablePadding
+          >
             <ListItemButton>
               <ListItemAvatar>
                 <Avatar alt={user.firstName} src={user.image} />
