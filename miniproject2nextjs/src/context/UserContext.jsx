@@ -6,6 +6,7 @@ const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
+  const defaultImg = "user.png";
 
   // fetch users from backend
   React.useEffect(() => {
@@ -83,7 +84,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ users, addUser, deleteUser, updateUser }}>
+    <UserContext.Provider
+      value={{ users, addUser, deleteUser, updateUser, defaultImg }}
+    >
       {children}
     </UserContext.Provider>
   );

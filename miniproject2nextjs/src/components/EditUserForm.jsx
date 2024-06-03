@@ -1,33 +1,27 @@
-import { Button, TextField } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
+import { Button, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
-const { useState } = require("react");
-
-export default function AddUserForm({ closeModal }) {
-  const { addUser, defaultImg, handleClose } = useUserContext();
-  const initialUserData = {
+export default function EditUserForm({ userId }) {
+  const { users, updateUser, defaultImg } = useUserContext();
+  const [user, setUser] = useState({
     firstName: "",
     lastName: "",
     image: "",
     phone: "",
-  };
-  const [user, setUser] = useState(initialUserData);
+  });
 
-  // handel submitting form
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(user);
-    await addUser(user);
-    setUser(initialUserData);
-    closeModal();
-  };
+  useEffect(() => {
+    const userData = users.find((user) => user.id === userId);
+    if (userData) {
+      setUser(userData);
+    }
+  }, [users]);
 
-  // handel cahange when selecting / typing in form items
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  // handle change when changing images in form item
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -40,7 +34,12 @@ export default function AddUserForm({ closeModal }) {
       reader.readAsDataURL(file);
     }
   };
-  // useEffect(() => {});
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    await updateUser(user.id, user);
+  };
 
   return (
     <form onSubmit={handleSubmit}>
