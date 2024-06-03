@@ -7,10 +7,14 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import { Button, Typography } from "@mui/material";
+import { useUserContext } from "@/context/UserContext";
 
 // recieve users prop and onDeleteUser from users/page
-export default function CheckboxListSecondary({ users, onDeleteUser }) {
+export default function CheckboxListSecondary() {
+  const { users, deleteUser } = useUserContext();
   const [checked, setChecked] = React.useState([1]);
+
+  const userList = users ?? [];
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -27,21 +31,7 @@ export default function CheckboxListSecondary({ users, onDeleteUser }) {
 
   // handle delete user function
   const handleDelete = async (userId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (!response.ok) {
-        throw new Error("failed to delete");
-      }
-      console.log(`user ${userId} deleted successfully`);
-      onDeleteUser(userId);
-    } catch (error) {
-      console.error("error deleting user", error);
-    }
+    await deleteUser(userId);
   };
 
   return (
@@ -50,7 +40,7 @@ export default function CheckboxListSecondary({ users, onDeleteUser }) {
       sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
     >
       {/* mapp users to show data on list */}
-      {users.map((user) => {
+      {userList.map((user) => {
         const labelId = `checkbox-list-secondary-label-${user.id}`;
         return (
           <ListItem

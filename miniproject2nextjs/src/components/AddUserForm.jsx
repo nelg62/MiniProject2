@@ -1,8 +1,10 @@
 import { Button, TextField } from "@mui/material";
+import { useUserContext } from "@/context/UserContext";
 
-const { useState, useEffect } = require("react");
+const { useState } = require("react");
 
-export default function AddUserForm({ onUserAdded }) {
+export default function AddUserForm({ closeModal }) {
+  const { addUser } = useUserContext();
   const initialUserData = {
     firstName: "",
     lastName: "",
@@ -12,34 +14,13 @@ export default function AddUserForm({ onUserAdded }) {
   const defaultImg = "user.png";
   const [user, setUser] = useState(initialUserData);
 
-  // //{firstName: "firstname"}
-
-  // const updateUser = (newUser) => {
-  //   const tempUser = { ...user, ...newUser };
-  //   setUser(tempUser);
-  // };
-
   // handel submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user);
-
-    const response = await fetch("http://localhost:3083/users/api/data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
-    if (response.ok) {
-      const result = await response.json();
-      console.log("user added:", result);
-      onUserAdded(result);
-    } else {
-      console.error("error adding user:", response.statusText);
-    }
-
+    await addUser(user);
     setUser(initialUserData);
+    closeModal();
   };
 
   // handel cahange when selecting / typing in form items

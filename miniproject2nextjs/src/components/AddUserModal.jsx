@@ -28,7 +28,7 @@ export default function AddUserModal({ onUserAdded }) {
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           {/* addUserForm passing onUserAdded prop */}
-          <AddUserForm onUserAdded={onUserAdded}></AddUserForm>
+          <AddUserForm closeModal={handleClose}></AddUserForm>
         </Box>
       </Modal>
     </div>
