@@ -2,7 +2,7 @@ import { useUserContext } from "@/context/UserContext";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function EditUserForm({ userId }) {
+export default function EditUserForm({ userId, setIsEditing }) {
   const { users, updateUser, defaultImg } = useUserContext();
   const [user, setUser] = useState({
     firstName: "",
@@ -39,6 +39,7 @@ export default function EditUserForm({ userId }) {
     event.preventDefault();
 
     await updateUser(user.id, user);
+    setIsEditing(false);
   };
 
   return (

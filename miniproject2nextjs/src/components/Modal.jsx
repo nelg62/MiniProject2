@@ -44,6 +44,7 @@ export default function BasicModal({ open, onClose, userId, user }) {
       } finally {
         if (isMounted) {
           setLoading(false);
+          setIsEditing(false);
         }
       }
     };
@@ -61,6 +62,7 @@ export default function BasicModal({ open, onClose, userId, user }) {
   const handleClose = () => {
     onClose();
     setUserData({});
+    setIsEditing(false);
   };
 
   return (
@@ -73,7 +75,7 @@ export default function BasicModal({ open, onClose, userId, user }) {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <EditUserForm userId={userId} />
+            <EditUserForm userId={userId} setIsEditing={setIsEditing} />
           </Box>
         </Modal>
       ) : (
