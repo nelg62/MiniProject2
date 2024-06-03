@@ -6,7 +6,10 @@ export default function AddUserForm({ onUserAdded }) {
   const initialUserData = {
     firstName: "",
     lastName: "",
+    image: "",
+    phone: "",
   };
+  const defaultImg = "user.png";
   const [user, setUser] = useState(initialUserData);
 
   // //{firstName: "firstname"}
@@ -16,6 +19,7 @@ export default function AddUserForm({ onUserAdded }) {
   //   setUser(tempUser);
   // };
 
+  // handel submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user);
@@ -38,10 +42,24 @@ export default function AddUserForm({ onUserAdded }) {
     setUser(initialUserData);
   };
 
+  // handel cahange when selecting / typing in form items
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
+  // handle change when changing images in form item
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setUser({ ...user, image: reader.result });
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
   // useEffect(() => {});
 
   return (
@@ -61,6 +79,34 @@ export default function AddUserForm({ onUserAdded }) {
         name="lastName"
         label="Last Name:"
         value={user.lastName}
+        onChange={handleChange}
+      />
+
+      {/* Image Choice */}
+      <label htmlFor="outputimg">Image:</label>
+      <img
+        src={user.image || defaultImg}
+        alt="Your image here"
+        id="outputimg"
+        style={{ height: "100px", width: "100px" }}
+      />
+      <div>
+        <input
+          type="file"
+          accept="image/*"
+          name="image"
+          id="file"
+          onChange={handleImageChange}
+          required
+        />
+      </div>
+
+      <TextField
+        type="number"
+        id="phone"
+        name="phone"
+        label="Phone:"
+        value={user.phone}
         onChange={handleChange}
       />
 
