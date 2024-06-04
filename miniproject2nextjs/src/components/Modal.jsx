@@ -44,19 +44,18 @@ export default function BasicModal({ open, onClose, userId, user }) {
       } finally {
         if (isMounted) {
           setLoading(false);
-          setIsEditing(false);
         }
       }
     };
 
-    if (open && userId) {
+    if (open && userId && !isEditing) {
       fetchUserDetails();
     }
 
     return () => {
       isMounted = false;
     };
-  }, [open, userId]);
+  }, [open, userId, !isEditing]);
 
   // funcion for closing modal
   const handleClose = () => {
@@ -109,7 +108,7 @@ export default function BasicModal({ open, onClose, userId, user }) {
             <Typography>
               {userData ? `Phone: ${userData.phone}` : ""}
             </Typography>
-            <Button onClick={setIsEditing(true)}>Edit</Button>
+            <Button onClick={() => setIsEditing(true)}>Edit</Button>
           </Box>
         </Modal>
       )}
