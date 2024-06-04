@@ -3,6 +3,7 @@ import AddUserModal from "@/components/AddUserModal";
 import CheckboxListSecondary from "@/components/UserList";
 import { useEffect, useState } from "react";
 import { UserDiv, UserList } from "../../../themes/makingStyles";
+import EnhancedTable from "@/components/UserTable";
 
 export default function Users() {
   // set states for users from api
@@ -41,11 +42,12 @@ export default function Users() {
       {/* display AddUserModal button and pass prop handleUserAdded  */}
       <AddUserModal onUserAdded={handleUserAdded} />
       {/* UserList show users pass users to display */}
-      <CheckboxListSecondary
+      {/* <CheckboxListSecondary
         users={users}
         onDeleteUser={handleDeleteUser}
         style={UserList}
-      />
+      /> */}
+      <EnhancedTable users={users} onDeleteUser={handleDeleteUser} />
     </div>
   );
 }
