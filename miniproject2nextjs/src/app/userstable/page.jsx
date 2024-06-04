@@ -41,12 +41,8 @@ export default function Users() {
       <h1>Users</h1>
       {/* display AddUserModal button and pass prop handleUserAdded  */}
       <AddUserModal onUserAdded={handleUserAdded} />
-      {/* UserList show users pass users to display */}
-      <CheckboxListSecondary
-        users={users}
-        onDeleteUser={handleDeleteUser}
-        style={UserList}
-      />
+
+      <EnhancedTable users={users} onDeleteUser={handleDeleteUser} />
     </div>
   );
 }
