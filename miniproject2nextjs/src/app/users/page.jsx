@@ -2,6 +2,7 @@
 import AddUserModal from "@/components/AddUserModal";
 import CheckboxListSecondary from "@/components/UserList";
 import { useEffect, useState } from "react";
+import { UserDiv, UserList } from "../../../themes/makingStyles";
 
 export default function Users() {
   // set states for users from api
@@ -35,12 +36,16 @@ export default function Users() {
 
   // users page
   return (
-    <div>
+    <div style={UserDiv}>
       <h1>Users</h1>
       {/* display AddUserModal button and pass prop handleUserAdded  */}
       <AddUserModal onUserAdded={handleUserAdded} />
       {/* UserList show users pass users to display */}
-      <CheckboxListSecondary users={users} onDeleteUser={handleDeleteUser} />
+      <CheckboxListSecondary
+        users={users}
+        onDeleteUser={handleDeleteUser}
+        style={UserList}
+      />
     </div>
   );
 }

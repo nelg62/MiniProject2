@@ -9,6 +9,7 @@ import Avatar from "@mui/material/Avatar";
 import { Button, Typography } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
 import BasicModal from "./Modal";
+import { UserStyles } from "../../themes/makingStyles";
 
 // recieve users prop and onDeleteUser from users/page
 export default function CheckboxListSecondary() {
@@ -43,10 +44,7 @@ export default function CheckboxListSecondary() {
 
   return (
     <>
-      <List
-        dense
-        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-      >
+      <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
         {/* mapp users to show data on list */}
         {userList.map((user) => {
           const labelId = `checkbox-list-secondary-label-${user.id}`;
@@ -67,7 +65,7 @@ export default function CheckboxListSecondary() {
                 <ListItemText
                   id={labelId}
                   primary={
-                    <Typography>
+                    <Typography style={UserStyles.textColor}>
                       {user.firstName} {user.lastName}
                     </Typography>
                   }

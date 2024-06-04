@@ -7,3 +7,9 @@ export const UserStyles = createTheme({
     fontSize: "1.2rem",
   },
 });
+
+export const UserDiv = createTheme({
+  width: "100%",
+});
+
+export const UserList = createTheme({});
