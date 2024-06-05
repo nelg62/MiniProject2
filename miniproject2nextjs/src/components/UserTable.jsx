@@ -97,6 +97,12 @@ const headCells = [
     disablePadding: false,
     label: "Email",
   },
+  {
+    id: "edit",
+    numeric: true,
+    disablePadding: false,
+    label: "Edit/Delete",
+  },
 ];
 
 function EnhancedTableHead(props) {
