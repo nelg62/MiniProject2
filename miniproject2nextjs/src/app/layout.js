@@ -14,10 +14,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UserProvider>
-          <ResponsiveAppBar />
-          {children}
-        </UserProvider>
+        <ResponsiveAppBar />
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );

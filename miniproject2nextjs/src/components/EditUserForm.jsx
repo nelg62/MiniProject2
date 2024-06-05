@@ -52,6 +52,7 @@ export default function EditUserForm({ userId, setIsEditing }) {
         label="First Name:"
         value={user.firstName}
         onChange={handleChange}
+        required
       />
 
       {/* Last Name */}
@@ -61,6 +62,7 @@ export default function EditUserForm({ userId, setIsEditing }) {
         label="Last Name:"
         value={user.lastName}
         onChange={handleChange}
+        required
       />
 
       {/* Email */}

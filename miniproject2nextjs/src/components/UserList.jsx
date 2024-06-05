@@ -13,7 +13,7 @@ import { UserStyles } from "../../themes/makingStyles";
 
 // recieve users prop and onDeleteUser from users/page
 export default function CheckboxListSecondary() {
-  const { users, deleteUser } = useUserContext();
+  const { users, deleteUser, handleDeleteUser } = useUserContext();
 
   // State to manage modal open/close status
   const [openModal, setOpenModal] = React.useState(false);
