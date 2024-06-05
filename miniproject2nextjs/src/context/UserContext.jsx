@@ -8,6 +8,7 @@ export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const defaultImg = "user.png";
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const handleUpdateUser = (user) => {
     setCurrentUser(user);
@@ -98,6 +99,8 @@ export const UserProvider = ({ children }) => {
         defaultImg,
         currentUser,
         handleUpdateUser,
+        isEditing,
+        setIsEditing,
       }}
     >
       {children}
