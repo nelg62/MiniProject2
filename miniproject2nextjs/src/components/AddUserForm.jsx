@@ -62,6 +62,16 @@ export default function AddUserForm({ closeModal }) {
         onChange={handleChange}
       />
 
+      {/* Email */}
+      <TextField
+        id="email"
+        type="email"
+        name="email"
+        label="Email:"
+        value={user.email}
+        onChange={handleChange}
+      />
+
       {/* Image Choice */}
       <label htmlFor="outputimg">Image:</label>
       <img

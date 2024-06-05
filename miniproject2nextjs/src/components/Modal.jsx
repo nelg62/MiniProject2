@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import EditUserForm from "./EditUserForm";
 import { Button } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
+import { UserStyles } from "../../themes/makingStyles";
 
 const style = {
   position: "absolute",
@@ -86,7 +87,7 @@ export default function BasicModal({ open, onClose, userId, user }) {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography>
+            <Typography style={UserStyles.textColor}>
               {userData ? (
                 <img
                   src={userData.image}
@@ -98,15 +99,23 @@ export default function BasicModal({ open, onClose, userId, user }) {
               )}
             </Typography>
 
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              style={UserStyles.textColor}
+            >
               {userData
-                ? `${userData.firstName} ${userData.lastName}`
+                ? `Name: ${userData.firstName} ${userData.lastName}`
                 : "Loading..."}
             </Typography>
-            {/* <Typography id="modal-modal-description">
-            {userData ? `Email: ${userData.email}` : ""}
-          </Typography> */}
-            <Typography>
+            <Typography
+              id="modal-modal-description"
+              style={UserStyles.textColor}
+            >
+              {userData ? `Email: ${userData.email}` : ""}
+            </Typography>
+            <Typography style={UserStyles.textColor}>
               {userData ? `Phone: ${userData.phone}` : ""}
             </Typography>
             <Button onClick={() => setIsEditing(true)}>Edit</Button>

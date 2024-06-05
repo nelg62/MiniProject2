@@ -24,6 +24,7 @@ import { visuallyHidden } from "@mui/utils";
 import { useUserContext } from "@/context/UserContext";
 import { Avatar, Button, ListItemAvatar, Modal } from "@mui/material";
 import EditUserForm from "./EditUserForm";
+import BasicModal from "./Modal";
 
 const style = {
   position: "absolute",
@@ -89,6 +90,12 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Phone Number",
+  },
+  {
+    id: "email",
+    numeric: true,
+    disablePadding: false,
+    label: "Email",
   },
 ];
 
@@ -238,6 +245,9 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedUserId, setSelectedUserId] = React.useState(null);
+  const [selectedUser, setSelectedUser] = React.useState(null);
 
   const { users, deleteUser, isEditing, setIsEditing, handleClose, userId } =
     useUserContext();
@@ -258,8 +268,16 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedUserId(null);
+    setSelectedUser(null);
+  };
+
   const handleEditClick = (id) => {
     setSelected([id]);
+    setSelectedUserId(id);
+    setOpenModal(true);
     setIsEditing(true);
   };
 
@@ -379,6 +397,7 @@ export default function EnhancedTable() {
                       <TableCell align="right">{row.firstName}</TableCell>
                       <TableCell align="right">{row.lastName}</TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
                       <TableCell align="right">
                         <IconButton
                           aria-label="edit"
@@ -424,6 +443,12 @@ export default function EnhancedTable() {
           label="Dense padding"
         />
       </Box>
+      <BasicModal
+        open={openModal}
+        onClose={handleCloseModal}
+        userId={selectedUserId}
+        user={selectedUser}
+      />
     </>
   );
 }

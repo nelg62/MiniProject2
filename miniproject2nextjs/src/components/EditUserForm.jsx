@@ -7,6 +7,7 @@ export default function EditUserForm({ userId, setIsEditing }) {
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     image: "",
     phone: "",
   });
@@ -59,6 +60,16 @@ export default function EditUserForm({ userId, setIsEditing }) {
         name="lastName"
         label="Last Name:"
         value={user.lastName}
+        onChange={handleChange}
+      />
+
+      {/* Email */}
+      <TextField
+        id="email"
+        type="email"
+        name="email"
+        label="Email:"
+        value={user.email}
         onChange={handleChange}
       />
 

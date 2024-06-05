@@ -65,6 +65,7 @@ const addUser = (req, res) => {
     id: parseInt(uuidv4().split("-")[0], 16),
     firstName,
     lastName,
+    email,
     image,
     phone,
   };
@@ -100,7 +101,7 @@ const deleteUser = (req, res) => {
 const updateUser = async (req, res) => {
   // Extract userId, firstName, lastName, image, and phone from request body
   const userId = req.params.userId;
-  const { firstName, lastName, image, phone } = req.body;
+  const { firstName, lastName, email, image, phone } = req.body;
 
   console.log("Raw request body:", req.body);
 
@@ -115,6 +116,7 @@ const updateUser = async (req, res) => {
       ...allUsers[userIndex],
       firstName,
       lastName,
+      email,
       image,
       phone,
     };
