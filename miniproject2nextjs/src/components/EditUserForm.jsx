@@ -17,7 +17,7 @@ export default function EditUserForm({ userId, setIsEditing }) {
     if (userData) {
       setUser(userData);
     }
-  }, [users]);
+  }, [userId, users]);
 
   const handleChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });

@@ -53,7 +53,7 @@ const getUserById = async (req, res) => {
 // add a user
 const addUser = (req, res) => {
   // deconstruct request body
-  const { firstName, lastName, image, phone } = req.body;
+  const { firstName, lastName, email, image, phone } = req.body;
 
   //   check if required feelds exist
   if (!firstName || !lastName) {

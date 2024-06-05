@@ -8,6 +8,7 @@ export default function AddUserForm({ closeModal }) {
   const initialUserData = {
     firstName: "",
     lastName: "",
+    email: "",
     image: "",
     phone: "",
   };
