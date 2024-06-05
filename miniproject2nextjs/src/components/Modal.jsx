@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import EditUserForm from "./EditUserForm";
 import { Button } from "@mui/material";
+import { useUserContext } from "@/context/UserContext";
 
 const style = {
   position: "absolute",
@@ -20,7 +21,7 @@ const style = {
 export default function BasicModal({ open, onClose, userId, user }) {
   const [userData, setUserData] = React.useState(user || {});
   const [loading, setLoading] = React.useState(false);
-  const [isEditing, setIsEditing] = React.useState(false);
+  const { isEditing, setIsEditing } = useUserContext();
 
   // Effect Hook to get user data when the modal is oppened
   React.useEffect(() => {
