@@ -26,18 +26,6 @@ import { Avatar, Button, ListItemAvatar, Modal } from "@mui/material";
 import EditUserForm from "./EditUserForm";
 import BasicModal from "./Modal";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -255,8 +243,15 @@ export default function EnhancedTable() {
   const [selectedUserId, setSelectedUserId] = React.useState(null);
   const [selectedUser, setSelectedUser] = React.useState(null);
 
-  const { users, deleteUser, isEditing, setIsEditing, handleClose, userId } =
-    useUserContext();
+  const {
+    users,
+    deleteUser,
+    isEditing,
+    setIsEditing,
+    handleClose,
+    userId,
+    handleOpenModal,
+  } = useUserContext();
   console.log("users", users);
 
   const handleRequestSort = (event, property) => {
@@ -280,11 +275,12 @@ export default function EnhancedTable() {
     setSelectedUser(null);
   };
 
-  const handleEditClick = (id) => {
-    setSelected([id]);
-    setSelectedUserId(id);
-    setOpenModal(true);
-    setIsEditing(true);
+  const handleEditClick = (userId) => {
+    handleOpenModal(userId);
+    // setSelected([id]);
+    // setSelectedUserId(id);
+    // setOpenModal(true);
+    // setIsEditing(true);
   };
 
   const handleDeleteClick = (id) => {

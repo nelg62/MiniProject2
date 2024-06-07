@@ -1,5 +1,4 @@
 "use client";
-import SimpleAlert from "@/components/Alert";
 import * as React from "react";
 import { useContext, useState } from "react";
 
@@ -7,10 +6,45 @@ const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
+  // for logged in user
   const [currentUser, setCurrentUser] = useState({});
   const defaultImg = "user.png";
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("failed to fetch user details");
+      }
+      const userData = await response.json();
+      setSelectedUser(userData.result);
+    } catch (error) {
+      console.error("error getting user details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpenModal = (userId) => {
+    setModalOpen(true);
+    fetchUserDetails(userId);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
+    setIsEditing(false);
+  };
+
+  // for logged in user
   const handleUpdateUser = (user) => {
     setCurrentUser(user);
   };
@@ -94,6 +128,13 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         users,
+        setUsers,
+        selectedUser,
+        setSelectedUser,
+        modalOpen,
+        handleOpenModal,
+        handleCloseModal,
+        loading,
         addUser,
         deleteUser,
         updateUser,
@@ -102,6 +143,7 @@ export const UserProvider = ({ children }) => {
         handleUpdateUser,
         isEditing,
         setIsEditing,
+        fetchUserDetails,
       }}
     >
       {children}

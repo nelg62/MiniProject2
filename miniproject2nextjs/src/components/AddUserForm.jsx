@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
+import { AddUserFormStyle } from "../../themes/makingStyles";
 
 const { useState } = require("react");
 
@@ -44,64 +45,70 @@ export default function AddUserForm({ closeModal }) {
   // useEffect(() => {});
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* First Name */}
-      <TextField
-        id="fname"
-        name="firstName"
-        label="First Name:"
-        value={user.firstName}
-        onChange={handleChange}
-      />
+    <div style={AddUserFormStyle}>
+      <form onSubmit={handleSubmit}>
+        <div>
+          {/* First Name */}
+          <TextField
+            id="fname"
+            name="firstName"
+            label="First Name:"
+            value={user.firstName}
+            onChange={handleChange}
+          />
 
-      {/* Last Name */}
-      <TextField
-        id="lname"
-        name="lastName"
-        label="Last Name:"
-        value={user.lastName}
-        onChange={handleChange}
-      />
+          {/* Last Name */}
+          <TextField
+            id="lname"
+            name="lastName"
+            label="Last Name:"
+            value={user.lastName}
+            onChange={handleChange}
+          />
+        </div>
 
-      {/* Email */}
-      <TextField
-        id="email"
-        type="email"
-        name="email"
-        label="Email:"
-        value={user.email}
-        onChange={handleChange}
-      />
-
-      {/* Image Choice */}
-      <label htmlFor="outputimg">Image:</label>
-      <img
-        src={user.image || defaultImg}
-        alt="Your image here"
-        id="outputimg"
-        style={{ height: "100px", width: "100px" }}
-      />
-      <div>
-        <input
-          type="file"
-          accept="image/*"
-          name="image"
-          id="file"
-          onChange={handleImageChange}
-          required
+        {/* Email */}
+        <TextField
+          id="email"
+          type="email"
+          name="email"
+          label="Email:"
+          value={user.email}
+          onChange={handleChange}
         />
-      </div>
 
-      <TextField
-        type="number"
-        id="phone"
-        name="phone"
-        label="Phone:"
-        value={user.phone}
-        onChange={handleChange}
-      />
+        {/* Image Choice */}
 
-      <Button type="submit">Submit</Button>
-    </form>
+        <img
+          src={user.image || defaultImg}
+          alt="Your image here"
+          id="outputimg"
+          style={AddUserFormStyle.image}
+        />
+
+        <div>
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            id="file"
+            onChange={handleImageChange}
+            required
+          />
+        </div>
+
+        <TextField
+          type="number"
+          id="phone"
+          name="phone"
+          label="Phone:"
+          value={user.phone}
+          onChange={handleChange}
+        />
+        <div>
+          <Button type="submit">Submit</Button>
+        </div>
+      </form>
+    </div>
   );
 }

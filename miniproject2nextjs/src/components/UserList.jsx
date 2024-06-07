@@ -13,29 +13,9 @@ import { UserStyles } from "../../themes/makingStyles";
 
 // recieve users prop and onDeleteUser from users/page
 export default function CheckboxListSecondary() {
-  const { users, deleteUser, handleDeleteUser } = useUserContext();
-
-  // State to manage modal open/close status
-  const [openModal, setOpenModal] = React.useState(false);
-  // State to manage the ID of the selected user
-  const [selectedUserId, setSelectedUserId] = React.useState(null);
-  // State to manage the data of the selected user
-  const [selectedUser, setSelectedUser] = React.useState(null);
+  const { users, deleteUser, handleOpenModal } = useUserContext();
 
   const userList = users ?? [];
-
-  //  handle click on list item to open modal
-  const handleListItemClick = (userId) => {
-    setSelectedUserId(userId);
-    setOpenModal(true);
-  };
-
-  // handle close of modal
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedUserId(null);
-    setSelectedUser(null);
-  };
 
   // handle delete user function
   const handleDelete = async (userId) => {
@@ -58,7 +38,7 @@ export default function CheckboxListSecondary() {
               }
               disablePadding
             >
-              <ListItemButton onClick={() => handleListItemClick(user.id)}>
+              <ListItemButton onClick={() => handleOpenModal(user.id)}>
                 <ListItemAvatar>
                   <Avatar alt={user.firstName} src={user.image} />
                 </ListItemAvatar>
@@ -75,12 +55,7 @@ export default function CheckboxListSecondary() {
           );
         })}
       </List>
-      <BasicModal
-        open={openModal}
-        onClose={handleCloseModal}
-        userId={selectedUserId}
-        user={selectedUser}
-      />
+      <BasicModal />
     </>
   );
 }
