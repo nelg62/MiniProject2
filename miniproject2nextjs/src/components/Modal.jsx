@@ -40,48 +40,6 @@ export default function BasicModal() {
     }
   }, [modalOpen, !isEditing]);
 
-  // // Effect Hook to get user data when the modal is oppened
-  // React.useEffect(() => {
-  //   let isMounted = true;
-  //   const fetchUserDetails = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:3083/users/api/data/${userId}`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch user details");
-  //       }
-  //       const userData = await response.json();
-  //       if (isMounted) {
-  //         console.log(userData);
-  //         setUserData(userData.result); // Update to userData.result
-  //       }
-  //     } catch (error) {
-  //       console.error("Error getting user details", error);
-  //     } finally {
-  //       if (isMounted) {
-  //         setLoading(false);
-  //       }
-  //     }
-  //   };
-
-  //   if (open && userId && !isEditing) {
-  //     fetchUserDetails();
-  //   }
-
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, [open, userId, !isEditing]);
-
-  // // funcion for closing modal
-  // const handleClose = () => {
-  //   onClose();
-  //   setUserData({});
-  //   setIsEditing(false);
-  // };
-
   return (
     <div>
       {isEditing ? (
@@ -106,38 +64,6 @@ export default function BasicModal() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            {/* <Typography style={UserStyles.textColor}>
-              {userData ? (
-                <img
-                  src={userData.image}
-                  alt={`picture of ${userData.firstName}`}
-                  style={{ height: "128px", width: "128px" }}
-                />
-              ) : (
-                ""
-              )}
-            </Typography>
-
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              style={UserStyles.textColor}
-            >
-              {userData
-                ? `Name: ${userData.firstName} ${userData.lastName}`
-                : "Loading..."}
-            </Typography>
-            <Typography
-              id="modal-modal-description"
-              style={UserStyles.textColor}
-            >
-              {userData ? `Email: ${userData.email}` : ""}
-            </Typography>
-            <Typography style={UserStyles.textColor}>
-              {userData ? `Phone: ${userData.phone}` : ""}
-            </Typography>
-            <Button onClick={() => setIsEditing(true)}>Edit</Button> */}
             <MediaCard user={selectedUser} />
           </Box>
         </Modal>

@@ -39,3 +39,40 @@ export const AddUserFormStyle = createTheme({
     width: "100px",
   },
 });
+
+export const formEditStyle = createTheme({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: "1rem",
+
+  textMargin: {
+    margin: "5px",
+  },
+});
+
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#007BFF",
+    },
+    secondary: {
+      main: "#6C757D",
+    },
+    background: {
+      default: "#F89FA",
+      paper: "#FFFFFF",
+    },
+    text: {
+      primary: "#000000",
+      secondary: "#000000",
+    },
+    accent: {
+      main: "#FFC107",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto, Arial, sans-serif",
+  },
+});

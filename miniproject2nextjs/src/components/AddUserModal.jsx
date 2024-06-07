@@ -2,6 +2,19 @@ import { Box, Button, Modal } from "@mui/material";
 import { useState } from "react";
 import AddUserForm from "./AddUserForm";
 import { BoxStyle } from "../../themes/makingStyles";
+import { Style } from "@mui/icons-material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function AddUserModal({ onUserAdded }) {
   const [open, setOpen] = useState(false);
@@ -14,7 +27,7 @@ export default function AddUserModal({ onUserAdded }) {
       <Button onClick={handleOpen}>Add User</Button>
       {/* modal to display the AddUserForm */}
       <Modal open={open} onClose={handleClose}>
-        <Box style={BoxStyle}>
+        <Box sx={style}>
           {/* addUserForm passing onUserAdded prop */}
           <AddUserForm closeModal={handleClose}></AddUserForm>
         </Box>

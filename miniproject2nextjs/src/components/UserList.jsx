@@ -24,7 +24,7 @@ export default function CheckboxListSecondary() {
 
   return (
     <>
-      <List dense sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <List dense sx={{ width: "100%" }}>
         {/* mapp users to show data on list */}
         {userList.map((user) => {
           const labelId = `checkbox-list-secondary-label-${user.id}`;
@@ -45,7 +45,7 @@ export default function CheckboxListSecondary() {
                 <ListItemText
                   id={labelId}
                   primary={
-                    <Typography style={UserStyles.textColor}>
+                    <Typography>
                       {user.firstName} {user.lastName}
                     </Typography>
                   }

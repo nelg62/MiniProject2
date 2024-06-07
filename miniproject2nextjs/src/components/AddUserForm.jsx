@@ -1,6 +1,6 @@
-import { Button, TextField } from "@mui/material";
+import { Button, Card, CardMedia, TextField } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
-import { AddUserFormStyle } from "../../themes/makingStyles";
+import { AddUserFormStyle, formEditStyle } from "../../themes/makingStyles";
 
 const { useState } = require("react");
 
@@ -45,9 +45,29 @@ export default function AddUserForm({ closeModal }) {
   // useEffect(() => {});
 
   return (
-    <div style={AddUserFormStyle}>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <form onSubmit={handleSubmit}>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardMedia
+          sx={{ height: 140 }}
+          image={user.image || defaultImg}
+          title={user.firstName}
+        />
+
+        {/* Image Choice */}
+        <div style={formEditStyle}>
+          <label htmlFor="file">
+            <h3>Add Image:</h3>{" "}
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            id="file"
+            onChange={handleImageChange}
+            style={formEditStyle.textMargin}
+          />
+
           {/* First Name */}
           <TextField
             id="fname"
@@ -55,6 +75,7 @@ export default function AddUserForm({ closeModal }) {
             label="First Name:"
             value={user.firstName}
             onChange={handleChange}
+            style={formEditStyle.textMargin}
           />
 
           {/* Last Name */}
@@ -64,51 +85,34 @@ export default function AddUserForm({ closeModal }) {
             label="Last Name:"
             value={user.lastName}
             onChange={handleChange}
+            style={formEditStyle.textMargin}
           />
-        </div>
 
-        {/* Email */}
-        <TextField
-          id="email"
-          type="email"
-          name="email"
-          label="Email:"
-          value={user.email}
-          onChange={handleChange}
-        />
-
-        {/* Image Choice */}
-
-        <img
-          src={user.image || defaultImg}
-          alt="Your image here"
-          id="outputimg"
-          style={AddUserFormStyle.image}
-        />
-
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            name="image"
-            id="file"
-            onChange={handleImageChange}
-            required
+          {/* Email */}
+          <TextField
+            id="email"
+            type="email"
+            name="email"
+            label="Email:"
+            value={user.email}
+            onChange={handleChange}
+            style={formEditStyle.textMargin}
           />
-        </div>
 
-        <TextField
-          type="number"
-          id="phone"
-          name="phone"
-          label="Phone:"
-          value={user.phone}
-          onChange={handleChange}
-        />
-        <div>
-          <Button type="submit">Submit</Button>
+          <TextField
+            type="number"
+            id="phone"
+            name="phone"
+            label="Phone:"
+            value={user.phone}
+            onChange={handleChange}
+            style={formEditStyle.textMargin}
+          />
+          <div>
+            <Button type="submit">Submit</Button>
+          </div>
         </div>
-      </form>
-    </div>
+      </Card>
+    </form>
   );
 }

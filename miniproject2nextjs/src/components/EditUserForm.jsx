@@ -1,6 +1,8 @@
 import { useUserContext } from "@/context/UserContext";
-import { Button, TextField } from "@mui/material";
+import { Button, CardMedia, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import Card from "@mui/material/Card";
+import { formEditStyle } from "../../themes/makingStyles";
 
 export default function EditUserForm({ userId, setIsEditing }) {
   const { users, updateUser, defaultImg } = useUserContext();
@@ -45,65 +47,75 @@ export default function EditUserForm({ userId, setIsEditing }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* First Name */}
-      <TextField
-        id="fname"
-        name="firstName"
-        label="First Name:"
-        value={user.firstName}
-        onChange={handleChange}
-        required
-      />
+      <Card sx={{ maxWidth: 345 }}>
+        {/* Image Choice */}
 
-      {/* Last Name */}
-      <TextField
-        id="lname"
-        name="lastName"
-        label="Last Name:"
-        value={user.lastName}
-        onChange={handleChange}
-        required
-      />
-
-      {/* Email */}
-      <TextField
-        id="email"
-        type="email"
-        name="email"
-        label="Email:"
-        value={user.email}
-        onChange={handleChange}
-      />
-
-      {/* Image Choice */}
-      <label htmlFor="outputimg">Image:</label>
-      <img
-        src={user.image || defaultImg}
-        alt="Your image here"
-        id="outputimg"
-        style={{ height: "100px", width: "100px" }}
-      />
-      <div>
-        <input
-          type="file"
-          accept="image/*"
-          name="image"
-          id="file"
-          onChange={handleImageChange}
-          required
+        <CardMedia
+          sx={{ height: 140 }}
+          image={user.image}
+          title={user.firstName}
         />
-      </div>
+        <div style={formEditStyle}>
+          <label htmlFor="file">
+            <h3>Change Image:</h3>{" "}
+          </label>
 
-      <TextField
-        type="number"
-        id="phone"
-        name="phone"
-        label="Phone:"
-        value={user.phone}
-        onChange={handleChange}
-      />
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            id="file"
+            onChange={handleImageChange}
+            style={formEditStyle.textMargin}
+          />
 
-      <Button type="submit">Submit</Button>
+          {/* First Name */}
+          <TextField
+            id="fname"
+            name="firstName"
+            label="First Name:"
+            value={user.firstName}
+            onChange={handleChange}
+            required
+            style={formEditStyle.textMargin}
+          />
+
+          {/* Last Name */}
+          <TextField
+            id="lname"
+            name="lastName"
+            label="Last Name:"
+            value={user.lastName}
+            onChange={handleChange}
+            required
+            style={formEditStyle.textMargin}
+          />
+
+          {/* Email */}
+          <TextField
+            id="email"
+            type="email"
+            name="email"
+            label="Email:"
+            value={user.email}
+            onChange={handleChange}
+            style={formEditStyle.textMargin}
+          />
+
+          <TextField
+            type="number"
+            id="phone"
+            name="phone"
+            label="Phone:"
+            value={user.phone}
+            onChange={handleChange}
+            style={formEditStyle.textMargin}
+          />
+          <div>
+            <Button type="submit">Submit</Button>
+          </div>
+        </div>
+      </Card>
     </form>
   );
 }
