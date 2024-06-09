@@ -4,7 +4,7 @@ import zIndex from "@mui/material/styles/zIndex";
 
 export const UserStyles = createTheme({
   textColor: {
-    color: "black",
+    color: "#6c757d",
     fontSize: "1.2rem",
   },
 });
@@ -23,7 +23,7 @@ export const BoxStyle = createTheme({
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  color: "black",
+  color: "#6c757d",
 });
 
 export const AddUserFormStyle = createTheme({
@@ -54,23 +54,19 @@ export const formEditStyle = createTheme({
 });
 
 export const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#007BFF",
-    },
-    secondary: {
-      main: "#6C757D",
-    },
+  colors: {
+    primary: "#007bff",
+    secondary: "#6cb2eb",
+    accent: "#fd7e14",
     background: {
-      default: "#F89FA",
-      paper: "#FFFFFF",
+      lightGray: "#f8f9fa",
+      white: "#ffffff",
     },
+    error: "#dc3545",
+    confirmation: "#28a745",
     text: {
-      primary: "#000000",
-      secondary: "#000000",
-    },
-    accent: {
-      main: "#FFC107",
+      darkGray: "#6c757d",
+      black: "#000000",
     },
   },
   typography: {

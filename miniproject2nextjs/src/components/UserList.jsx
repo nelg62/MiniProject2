@@ -6,10 +6,15 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, IconButton, Paper, Typography } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
 import BasicModal from "./Modal";
-import { UserStyles } from "../../themes/makingStyles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  UserStyles,
+  theme,
+  userListItemStyle,
+} from "../../themes/makingStyles";
 
 // recieve users prop and onDeleteUser from users/page
 export default function CheckboxListSecondary() {
@@ -19,40 +24,50 @@ export default function CheckboxListSecondary() {
 
   return (
     <>
-      <List dense sx={{ width: "100%" }}>
-        {/* mapp users to show data on list */}
-        {userList.map((user) => {
-          const labelId = `checkbox-list-secondary-label-${user.id}`;
-          return (
-            <ListItem
-              key={user.id}
-              secondaryAction={
-                <>
-                  <Button onClick={() => confirmDeleteUser(user.id)}>
-                    Delete
-                  </Button>
-                </>
-              }
-              disablePadding
-            >
-              <ListItemButton onClick={() => handleOpenModal(user.id)}>
-                <ListItemAvatar>
-                  <Avatar alt={user.firstName} src={user.image} />
-                </ListItemAvatar>
-                <ListItemText
-                  id={labelId}
-                  primary={
-                    <Typography>
-                      {user.firstName} {user.lastName}
-                    </Typography>
+      <Box>
+        <Paper sx={{ width: "100%", mb: 2 }}>
+          <List dense sx={{ width: "100%" }}>
+            {/* mapp users to show data on list */}
+            {userList.map((user) => {
+              const labelId = `checkbox-list-secondary-label-${user.id}`;
+              return (
+                <ListItem
+                  key={user.id}
+                  secondaryAction={
+                    <>
+                      <IconButton onClick={() => confirmDeleteUser(user.id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
                   }
-                />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-      <BasicModal />
+                  sx={{
+                    pl: { sm: 2 },
+                    pr: { xs: 1, sm: 1 },
+                    borderBottom: "1px solid rgba(224, 224, 224, 1)",
+                    borderTop: "1px solid rgba(224, 224, 224, 1)",
+                  }}
+                  disablePadding
+                >
+                  <ListItemButton onClick={() => handleOpenModal(user.id)}>
+                    <ListItemAvatar>
+                      <Avatar alt={user.firstName} src={user.image} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      id={labelId}
+                      primary={
+                        <Typography>
+                          {user.firstName} {user.lastName}
+                        </Typography>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+          <BasicModal />
+        </Paper>
+      </Box>
     </>
   );
 }

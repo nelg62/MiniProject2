@@ -1,7 +1,7 @@
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Button, Modal, Paper } from "@mui/material";
 import { useState } from "react";
 import AddUserForm from "./AddUserForm";
-import { BoxStyle } from "../../themes/makingStyles";
+import { BoxStyle, theme } from "../../themes/makingStyles";
 import { Style } from "@mui/icons-material";
 
 const style = {
@@ -24,7 +24,11 @@ export default function AddUserModal({ onUserAdded }) {
   return (
     <div>
       {/* button to open Modal for AddUserForm */}
-      <Button onClick={handleOpen}>Add User</Button>
+      <Paper sx={{ width: "85px", marginBottom: "5px" }}>
+        <Button onClick={handleOpen} style={{ color: theme.colors.accent }}>
+          Add User
+        </Button>
+      </Paper>
       {/* modal to display the AddUserForm */}
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
