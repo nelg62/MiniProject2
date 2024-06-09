@@ -1,4 +1,6 @@
 "use client";
+import SimpleAlert from "@/components/Alert";
+import DeleteConfirmation from "@/components/DeleteConfirmation";
 import * as React from "react";
 import { useContext, useState } from "react";
 
@@ -6,14 +8,23 @@ const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
-  // for logged in user
   const [currentUser, setCurrentUser] = useState({});
-  const defaultImg = "user.png";
   const [isEditing, setIsEditing] = useState(false);
-
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Alert state
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const defaultImg = "user.png";
 
   const fetchUserDetails = async (userId) => {
     setLoading(true);
@@ -44,12 +55,10 @@ export const UserProvider = ({ children }) => {
     setIsEditing(false);
   };
 
-  // for logged in user
   const handleUpdateUser = (user) => {
     setCurrentUser(user);
   };
 
-  // fetch users from backend
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -63,8 +72,8 @@ export const UserProvider = ({ children }) => {
     fetchUsers();
   }, []);
 
-  // adding user
   const addUser = async (user) => {
+    setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
     try {
       const response = await fetch("http://localhost:3083/users/api/data", {
         method: "POST",
@@ -74,15 +83,33 @@ export const UserProvider = ({ children }) => {
       if (response.ok) {
         const newUser = await response.json();
         setUsers((prevUsers) => [...prevUsers, newUser]);
+        setAlert({
+          open: true,
+          message: "User added successfully!",
+          severity: "success",
+        });
       } else {
         console.error("Error adding user:", response.statusText);
+        setAlert({
+          open: true,
+          message: "Failed to add user.",
+          severity: "error",
+        });
       }
     } catch (error) {
       console.error("Error adding user", error);
+      setAlert({
+        open: true,
+        message: "Failed to add user.",
+        severity: "error",
+      });
+    } finally {
+      setTimeout(() => {
+        setAlert({ open: false, message: "", severity: "success" });
+      }, 3000); // Hide the alert after 3 seconds
     }
   };
 
-  // delete user
   const deleteUser = async (userId) => {
     try {
       const response = await fetch(
@@ -93,12 +120,49 @@ export const UserProvider = ({ children }) => {
       );
       if (response.ok) {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+        setAlert({
+          open: true,
+          message: "user deleted successfully",
+          severity: "success",
+        });
       } else {
         console.error("Error deleting user:", response.statusText);
+        setAlert({
+          open: true,
+          message: "failed to delete user",
+          severity: "error",
+        });
       }
     } catch (error) {
       console.error("Error deleting user:", error);
+      setAlert({
+        open: true,
+        message: "failed to delete user",
+        severity: "error",
+      });
+    } finally {
+      setTimeout(() => {
+        setAlert({ open: false, message: "", severity: "success" });
+      }, 3000);
     }
+  };
+
+  const confirmDeleteUser = (userId) => {
+    setUserToDelete(userId);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (userToDelete) {
+      await deleteUser(userToDelete);
+      setUserToDelete(null);
+      setDeleteModalOpen(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setUserToDelete(null);
+    setDeleteModalOpen(false);
   };
 
   const updateUser = async (userId, updatedUser) => {
@@ -116,11 +180,21 @@ export const UserProvider = ({ children }) => {
         setUsers((prevUsers) =>
           prevUsers.map((user) => (user.id === userId ? newUser.user : user))
         );
+        setAlert({ open: true, message: "User Updated", severity: "success" });
       } else {
-        console.error("Error updateing user:", response.statusText);
+        console.error("Error updating user:", response.statusText);
+        setAlert({
+          open: true,
+          message: "failed to update user",
+          severity: "error",
+        });
       }
     } catch (error) {
       console.error("Error updating user:", error);
+    } finally {
+      setTimeout(() => {
+        setAlert({ open: false, message: "", severity: "success" });
+      }, 3000);
     }
   };
 
@@ -144,9 +218,18 @@ export const UserProvider = ({ children }) => {
         isEditing,
         setIsEditing,
         fetchUserDetails,
+        confirmDeleteUser,
       }}
     >
       {children}
+      {alert.open && (
+        <SimpleAlert message={alert.message} severity={alert.severity} />
+      )}
+      <DeleteConfirmation
+        open={deleteModalOpen}
+        handleClose={handleCancelDelete}
+        handleConfirm={handleConfirmDelete}
+      />
     </UserContext.Provider>
   );
 };

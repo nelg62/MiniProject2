@@ -86,10 +86,10 @@ const headCells = [
     label: "Email",
   },
   {
-    id: "edit",
+    id: "view",
     numeric: true,
     disablePadding: false,
-    label: "Edit/Delete",
+    label: "View/Delete",
   },
 ];
 
@@ -158,7 +158,7 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, selected, setSelected } = props;
 
-  const { deleteUser, setIsEditing } = useUserContext();
+  const { deleteUser, setIsEditing, handleOpenModal } = useUserContext();
 
   const handleDelete = () => {
     console.log("selected", selected);
@@ -211,8 +211,8 @@ function EnhancedTableToolbar(props) {
             </IconButton>
           </Tooltip>
           {numSelected === 1 && (
-            <Tooltip title="Edit">
-              <Button onClick={() => setIsEditing(true)}>Edit</Button>
+            <Tooltip title="View">
+              <Button onClick={() => handleOpenModal(selected)}>View</Button>
             </Tooltip>
           )}
         </>
@@ -251,6 +251,7 @@ export default function EnhancedTable() {
     handleClose,
     userId,
     handleOpenModal,
+    confirmDeleteUser,
   } = useUserContext();
   console.log("users", users);
 
@@ -283,12 +284,12 @@ export default function EnhancedTable() {
     // setIsEditing(true);
   };
 
-  const handleDeleteClick = (id) => {
-    deleteUser(id);
-    setSelected((prevSelected) =>
-      prevSelected.filter((selectedId) => selectedId !== id)
-    );
-  };
+  // const handleDeleteClick = (id) => {
+  //   deleteUser(id);
+  //   setSelected((prevSelected) =>
+  //     prevSelected.filter((selectedId) => selectedId !== id)
+  //   );
+  // };
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
@@ -406,11 +407,11 @@ export default function EnhancedTable() {
                           onClick={() => handleEditClick(row.id)}
                         >
                           {" "}
-                          Edit
+                          View
                         </IconButton>
                         <IconButton
                           aria-label="delete"
-                          onClick={() => handleDeleteClick(row.id)}
+                          onClick={() => confirmDeleteUser(row.id)}
                         >
                           <DeleteIcon />
                         </IconButton>

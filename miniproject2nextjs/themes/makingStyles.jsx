@@ -1,5 +1,6 @@
 "use client";
 import { createTheme } from "@mui/material";
+import zIndex from "@mui/material/styles/zIndex";
 
 export const UserStyles = createTheme({
   textColor: {
@@ -76,3 +77,10 @@ export const theme = createTheme({
     fontFamily: "Roboto, Arial, sans-serif",
   },
 });
+
+export const alertStyle = {
+  position: "fixed",
+  bottom: "16px",
+  left: "16px",
+  zIndex: "9999",
+};

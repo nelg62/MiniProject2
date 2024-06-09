@@ -13,14 +13,9 @@ import { UserStyles } from "../../themes/makingStyles";
 
 // recieve users prop and onDeleteUser from users/page
 export default function CheckboxListSecondary() {
-  const { users, deleteUser, handleOpenModal } = useUserContext();
+  const { users, confirmDeleteUser, handleOpenModal } = useUserContext();
 
   const userList = users ?? [];
-
-  // handle delete user function
-  const handleDelete = async (userId) => {
-    await deleteUser(userId);
-  };
 
   return (
     <>
@@ -33,7 +28,9 @@ export default function CheckboxListSecondary() {
               key={user.id}
               secondaryAction={
                 <>
-                  <Button onClick={() => handleDelete(user.id)}>Delete</Button>
+                  <Button onClick={() => confirmDeleteUser(user.id)}>
+                    Delete
+                  </Button>
                 </>
               }
               disablePadding

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import { useUserContext } from "@/context/UserContext";
 
 export default function MediaCard({ user }) {
-  const { setIsEditing } = useUserContext();
+  const { setIsEditing, handleCloseModal } = useUserContext();
 
   console.log("user info card", user);
   if (!user) {
@@ -36,7 +36,9 @@ export default function MediaCard({ user }) {
       </CardContent>
       <CardActions>
         <Button onClick={() => setIsEditing(true)}>Edit</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={() => handleCloseModal()}>
+          Cancel
+        </Button>
       </CardActions>
     </Card>
   );

@@ -5,7 +5,7 @@ import Card from "@mui/material/Card";
 import { formEditStyle } from "../../themes/makingStyles";
 
 export default function EditUserForm({ userId, setIsEditing }) {
-  const { users, updateUser, defaultImg } = useUserContext();
+  const { users, updateUser, defaultImg, handleCloseModal } = useUserContext();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -113,6 +113,13 @@ export default function EditUserForm({ userId, setIsEditing }) {
           />
           <div>
             <Button type="submit">Submit</Button>
+            <Button
+              onClick={() => {
+                handleCloseModal();
+              }}
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </Card>
