@@ -36,10 +36,10 @@ export default function DeleteConfirmation({
           Are you sure you want to delete this user?
         </Typography>
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={handleClose} sx={{ mr: 1 }}>
+          <Button variant="contained" onClick={handleClose} sx={{ mr: 1 }}>
             Cancel
           </Button>
-          <Button onClick={handleConfirm} color="error">
+          <Button variant="contained" onClick={handleConfirm} color="error">
             Delete
           </Button>
         </Box>

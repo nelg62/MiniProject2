@@ -1,5 +1,5 @@
 import { useUserContext } from "@/context/UserContext";
-import { Button, CardMedia, TextField } from "@mui/material";
+import { Button, CardMedia, Container, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import { formEditStyle } from "../../themes/makingStyles";
@@ -46,83 +46,118 @@ export default function EditUserForm({ userId, setIsEditing }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Card sx={{ maxWidth: 345 }}>
-        {/* Image Choice */}
+    <Container>
+      <form onSubmit={handleSubmit}>
+        <Card sx={{ maxWidth: 345 }}>
+          {/* Image Choice */}
 
-        <CardMedia
-          sx={{ height: 140 }}
-          image={user.image}
-          title={user.firstName}
-        />
-        <div style={formEditStyle}>
-          <label htmlFor="file">
-            <h3>Change Image:</h3>{" "}
-          </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            name="image"
-            id="file"
-            onChange={handleImageChange}
-            style={formEditStyle.textMargin}
+          <CardMedia
+            sx={{ height: 140 }}
+            image={user.image}
+            title={user.firstName}
           />
+          <div style={formEditStyle}>
+            {/* <label htmlFor="file">
+              <h3>Change Image:</h3>{" "}
+            </label> */}
 
-          {/* First Name */}
-          <TextField
-            id="fname"
-            name="firstName"
-            label="First Name:"
-            value={user.firstName}
-            onChange={handleChange}
-            required
-            style={formEditStyle.textMargin}
-          />
-
-          {/* Last Name */}
-          <TextField
-            id="lname"
-            name="lastName"
-            label="Last Name:"
-            value={user.lastName}
-            onChange={handleChange}
-            required
-            style={formEditStyle.textMargin}
-          />
-
-          {/* Email */}
-          <TextField
-            id="email"
-            type="email"
-            name="email"
-            label="Email:"
-            value={user.email}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
-
-          <TextField
-            type="number"
-            id="phone"
-            name="phone"
-            label="Phone:"
-            value={user.phone}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
-          <div>
-            <Button type="submit">Submit</Button>
             <Button
-              onClick={() => {
-                handleCloseModal();
-              }}
+              variant="contained"
+              component="label"
+              style={{ marginBottom: "10px" }}
             >
-              Cancel
+              Change Image
+              <input
+                type="file"
+                accept="image/*"
+                name="image"
+                id="file"
+                onChange={handleImageChange}
+                style={
+                  (formEditStyle.textMargin,
+                  {
+                    clip: "rect(0 0 0 0)",
+                    clipPath: "inset(50%)",
+                    height: 1,
+                    overflow: "hidden",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    whiteSpace: "nowrap",
+                    width: 1,
+                  })
+                }
+              />
             </Button>
+
+            {/* <input
+              type="file"
+              accept="image/*"
+              name="image"
+              id="file"
+              onChange={handleImageChange}
+              style={formEditStyle.textMargin}
+            /> */}
+
+            {/* First Name */}
+            <TextField
+              id="fname"
+              name="firstName"
+              label="First Name:"
+              value={user.firstName}
+              onChange={handleChange}
+              required
+              style={formEditStyle.textMargin}
+            />
+
+            {/* Last Name */}
+            <TextField
+              id="lname"
+              name="lastName"
+              label="Last Name:"
+              value={user.lastName}
+              onChange={handleChange}
+              required
+              style={formEditStyle.textMargin}
+            />
+
+            {/* Email */}
+            <TextField
+              id="email"
+              type="email"
+              name="email"
+              label="Email:"
+              value={user.email}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+            />
+
+            <TextField
+              type="number"
+              id="phone"
+              name="phone"
+              label="Phone:"
+              value={user.phone}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+            />
+            <div style={{ marginTop: "10px" }}>
+              <Button variant="contained" type="submit">
+                Submit
+              </Button>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  handleCloseModal();
+                }}
+                color="error"
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
-    </form>
+        </Card>
+      </form>
+    </Container>
   );
 }

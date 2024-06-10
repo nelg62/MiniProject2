@@ -1,11 +1,11 @@
-import { Button, Card, CardMedia, TextField } from "@mui/material";
+import { Button, Card, CardMedia, Container, TextField } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
 import { AddUserFormStyle, formEditStyle } from "../../themes/makingStyles";
 
 const { useState } = require("react");
 
 export default function AddUserForm({ closeModal }) {
-  const { addUser, defaultImg, handleClose } = useUserContext();
+  const { addUser, defaultImg, handleCloseModal } = useUserContext();
   const initialUserData = {
     firstName: "",
     lastName: "",
@@ -45,74 +45,113 @@ export default function AddUserForm({ closeModal }) {
   // useEffect(() => {});
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardMedia
-          sx={{ height: 140 }}
-          image={user.image || defaultImg}
-          title={user.firstName}
-        />
-
-        {/* Image Choice */}
-        <div style={formEditStyle}>
-          <label htmlFor="file">
-            <h3>Add Image:</h3>{" "}
-          </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            name="image"
-            id="file"
-            onChange={handleImageChange}
-            style={formEditStyle.textMargin}
+    <Container>
+      <form onSubmit={handleSubmit}>
+        <Card sx={{ maxWidth: 345 }}>
+          <CardMedia
+            sx={{ height: 140 }}
+            image={user.image || defaultImg}
+            title={user.firstName}
           />
 
-          {/* First Name */}
-          <TextField
-            id="fname"
-            name="firstName"
-            label="First Name:"
-            value={user.firstName}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
+          {/* Image Choice */}
+          <div style={formEditStyle}>
+            {/* <label htmlFor="file">
+              <h3>Add Image:</h3>
+            </label> */}
+            <Button
+              variant="contained"
+              component="label"
+              style={{ marginBottom: "10px" }}
+            >
+              Upload Image
+              <input
+                type="file"
+                accept="image/*"
+                name="image"
+                id="file"
+                onChange={handleImageChange}
+                style={
+                  (formEditStyle.textMargin,
+                  {
+                    clip: "rect(0 0 0 0)",
+                    clipPath: "inset(50%)",
+                    height: 1,
+                    overflow: "hidden",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    whiteSpace: "nowrap",
+                    width: 1,
+                  })
+                }
+              />
+            </Button>
 
-          {/* Last Name */}
-          <TextField
-            id="lname"
-            name="lastName"
-            label="Last Name:"
-            value={user.lastName}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
+            {/* First Name */}
+            <TextField
+              id="fname"
+              name="firstName"
+              label="First Name:"
+              value={user.firstName}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+              required
+            />
 
-          {/* Email */}
-          <TextField
-            id="email"
-            type="email"
-            name="email"
-            label="Email:"
-            value={user.email}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
+            {/* Last Name */}
+            <TextField
+              id="lname"
+              name="lastName"
+              label="Last Name:"
+              value={user.lastName}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+              required
+            />
 
-          <TextField
-            type="number"
-            id="phone"
-            name="phone"
-            label="Phone:"
-            value={user.phone}
-            onChange={handleChange}
-            style={formEditStyle.textMargin}
-          />
-          <div>
-            <Button type="submit">Submit</Button>
+            {/* Email */}
+            <TextField
+              id="email"
+              type="email"
+              name="email"
+              label="Email:"
+              value={user.email}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+              required
+            />
+
+            <TextField
+              type="number"
+              id="phone"
+              name="phone"
+              label="Phone:"
+              value={user.phone}
+              onChange={handleChange}
+              style={formEditStyle.textMargin}
+            />
+            <div style={{ marginTop: "10px" }}>
+              <Button
+                style={{ height: "30px" }}
+                type="submit"
+                variant="contained"
+              >
+                Submit
+              </Button>
+              <Button
+                style={{ height: "30px" }}
+                variant="contained"
+                size="small"
+                onClick={() => handleCloseModal()}
+                color="error"
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
-        </div>
-      </Card>
-    </form>
+        </Card>
+      </form>
+    </Container>
   );
 }

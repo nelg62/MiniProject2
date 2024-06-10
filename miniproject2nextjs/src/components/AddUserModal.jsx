@@ -1,4 +1,4 @@
-import { Box, Button, Modal, Paper } from "@mui/material";
+import { Box, Button, Container, Modal, Paper } from "@mui/material";
 import { useState } from "react";
 import AddUserForm from "./AddUserForm";
 import { BoxStyle, theme } from "../../themes/makingStyles";
@@ -22,20 +22,23 @@ export default function AddUserModal({ onUserAdded }) {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <Container>
       {/* button to open Modal for AddUserForm */}
-      <Paper sx={{ width: "85px", marginBottom: "5px" }}>
-        <Button onClick={handleOpen} style={{ color: theme.colors.accent }}>
-          Add User
-        </Button>
-      </Paper>
+
+      <Button variant="contained" onClick={handleOpen}>
+        Add User
+      </Button>
+
       {/* modal to display the AddUserForm */}
       <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
+        <Box
+          sx={style}
+          style={{ backgroundColor: theme.colors.background.lightGray }}
+        >
           {/* addUserForm passing onUserAdded prop */}
           <AddUserForm closeModal={handleClose}></AddUserForm>
         </Box>
       </Modal>
-    </div>
+    </Container>
   );
 }
