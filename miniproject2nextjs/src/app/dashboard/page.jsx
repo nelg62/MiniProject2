@@ -5,7 +5,7 @@ export default function Dashboard() {
     <div className="Dashboard">
       <h1>Dashboard</h1>
       <p>
-        Please Login Here <Link href="/">home</Link>.
+        Please Login To See More <Link href="/login">Login</Link>.
       </p>
     </div>
   );

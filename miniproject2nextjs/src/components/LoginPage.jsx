@@ -18,26 +18,16 @@ import { useUserContext } from "@/context/UserContext";
 const theme = createTheme();
 
 export default function SignIn() {
-  const [userEmail, setUserEmail] = React.useState("");
-  const [userPassword, setUserPassword] = React.useState("");
-  const [sumbitResult, setSubmitResult] = React.useState("");
-
-  const { currentUser, handleUpdateUser } = useUserContext();
-
-  // on submit of login
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // check password requirements
-    if (userPassword.length < 5) {
-      setSubmitResult("Password must be at least 5 Characters long");
-    } else if (userPassword === userEmail) {
-      setSubmitResult("Password must not match email address");
-    } else {
-      setSubmitResult("Successful Login");
-      handleUpdateUser({ email: userEmail });
-    }
-  };
+  const {
+    currentUser,
+    handleUpdateUser,
+    setUserPassword,
+    setUserEmail,
+    userEmail,
+    userPassword,
+    sumbitResult,
+    handleSubmitLogin,
+  } = useUserContext();
 
   // if logged in
   if (currentUser.email)
@@ -70,7 +60,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitLogin}
             noValidate
             sx={{ mt: 1 }}
           >

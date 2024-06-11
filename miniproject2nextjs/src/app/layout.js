@@ -11,12 +11,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Container>
+        <UserProvider>
           <ThemeProvider theme={theme}>
-            <ResponsiveAppBar />
-            <UserProvider>{children}</UserProvider>
+            <Container>
+              <ResponsiveAppBar />
+              {children}
+            </Container>
           </ThemeProvider>
-        </Container>
+        </UserProvider>
       </body>
     </html>
   );

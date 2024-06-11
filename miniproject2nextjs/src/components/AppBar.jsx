@@ -16,7 +16,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import { theme } from "../../themes/makingStyles";
 
-const pages = ["users", "userstable", "login"];
+const pages = ["dashboard", "users", "userstable", "login"];
 const settings = [""];
 
 function ResponsiveAppBar() {

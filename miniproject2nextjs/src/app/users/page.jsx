@@ -4,8 +4,19 @@ import CheckboxListSecondary from "@/components/UserList";
 import { useEffect, useState } from "react";
 import EnhancedTable from "@/components/UserTable";
 import { UserDiv } from "../../../themes/makingStyles";
+import { useUserContext } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function Users() {
+  const { currentUser, loading } = useUserContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!currentUser.email) {
+      router.push("/login");
+    }
+  }, [currentUser]);
+
   // users page
   return (
     <div style={UserDiv}>

@@ -26,6 +26,25 @@ export const UserProvider = ({ children }) => {
 
   const defaultImg = "user.png";
 
+  const [userEmail, setUserEmail] = React.useState("");
+  const [userPassword, setUserPassword] = React.useState("");
+  const [sumbitResult, setSubmitResult] = React.useState("");
+
+  // on submit of login
+  const handleSubmitLogin = (event) => {
+    event.preventDefault();
+
+    // check password requirements
+    if (userPassword.length < 5) {
+      setSubmitResult("Password must be at least 5 Characters long");
+    } else if (userPassword === userEmail) {
+      setSubmitResult("Password must not match email address");
+    } else {
+      setSubmitResult("Successful Login");
+      handleUpdateUser({ email: userEmail });
+    }
+  };
+
   const fetchUserDetails = async (userId) => {
     setLoading(true);
     try {
@@ -219,6 +238,13 @@ export const UserProvider = ({ children }) => {
         setIsEditing,
         fetchUserDetails,
         confirmDeleteUser,
+        handleSubmitLogin,
+        setUserPassword,
+        setUserEmail,
+        setSubmitResult,
+        userEmail,
+        userPassword,
+        sumbitResult,
       }}
     >
       {children}
