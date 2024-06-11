@@ -15,13 +15,16 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import { theme } from "../../themes/makingStyles";
+import { useUserContext } from "@/context/UserContext";
 
 const pages = ["dashboard", "users", "userstable", "login"];
-const settings = [""];
+const settings = ["Logout"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { handleUpdateUser } = useUserContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -153,7 +156,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleUpdateUser({})}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
