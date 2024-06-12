@@ -6,7 +6,7 @@ const { useState } = require("react");
 
 // form for adding new user
 export default function AddUserForm({ closeModal }) {
-  const { addUser, defaultImg } = useUserContext();
+  const { defaultImg } = useUserContext();
 
   // create variable object with values to fill for the form data
   const initialUserData = {
@@ -20,10 +20,52 @@ export default function AddUserForm({ closeModal }) {
   // create a user and setUser state and set it to the valuse of the initialUserData
   const [user, setUser] = useState(initialUserData);
 
+  const { setAlert, setUsers } = useUserContext();
+
   // handel submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user);
+
+    // edit this to remove the if statement as it is not neded as the try catch does the same thing remove the duplicate error log aswell
+    const addUser = async (user) => {
+      setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
+      try {
+        const response = await fetch("http://localhost:3083/users/api/data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(user),
+        });
+        if (response.ok) {
+          const newUser = await response.json();
+          setUsers((prevUsers) => [...prevUsers, newUser]);
+          setAlert({
+            open: true,
+            message: "User added successfully!",
+            severity: "success",
+          });
+        } else {
+          console.error("Error adding user:", response.statusText);
+          setAlert({
+            open: true,
+            message: "Failed to add user.",
+            severity: "error",
+          });
+        }
+      } catch (error) {
+        console.error("Error adding user", error);
+        setAlert({
+          open: true,
+          message: "Failed to add user.",
+          severity: "error",
+        });
+      } finally {
+        setTimeout(() => {
+          setAlert({ open: false, message: "", severity: "success" });
+        }, 3000); // Hide the alert after 3 seconds
+      }
+    };
+
     // call addUser function from context passing in the user as prop
     await addUser(user);
     // if response is successful setUser state to initialUserData

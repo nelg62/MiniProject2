@@ -93,43 +93,43 @@ export const UserProvider = ({ children }) => {
     fetchUsers();
   }, []);
 
-  const addUser = async (user) => {
-    setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
-    try {
-      const response = await fetch("http://localhost:3083/users/api/data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
-      });
-      if (response.ok) {
-        const newUser = await response.json();
-        setUsers((prevUsers) => [...prevUsers, newUser]);
-        setAlert({
-          open: true,
-          message: "User added successfully!",
-          severity: "success",
-        });
-      } else {
-        console.error("Error adding user:", response.statusText);
-        setAlert({
-          open: true,
-          message: "Failed to add user.",
-          severity: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error adding user", error);
-      setAlert({
-        open: true,
-        message: "Failed to add user.",
-        severity: "error",
-      });
-    } finally {
-      setTimeout(() => {
-        setAlert({ open: false, message: "", severity: "success" });
-      }, 3000); // Hide the alert after 3 seconds
-    }
-  };
+  // const addUser = async (user) => {
+  //   setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
+  //   try {
+  //     const response = await fetch("http://localhost:3083/users/api/data", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(user),
+  //     });
+  //     if (response.ok) {
+  //       const newUser = await response.json();
+  //       setUsers((prevUsers) => [...prevUsers, newUser]);
+  //       setAlert({
+  //         open: true,
+  //         message: "User added successfully!",
+  //         severity: "success",
+  //       });
+  //     } else {
+  //       console.error("Error adding user:", response.statusText);
+  //       setAlert({
+  //         open: true,
+  //         message: "Failed to add user.",
+  //         severity: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding user", error);
+  //     setAlert({
+  //       open: true,
+  //       message: "Failed to add user.",
+  //       severity: "error",
+  //     });
+  //   } finally {
+  //     setTimeout(() => {
+  //       setAlert({ open: false, message: "", severity: "success" });
+  //     }, 3000); // Hide the alert after 3 seconds
+  //   }
+  // };
 
   const deleteUser = async (userId) => {
     try {
@@ -186,38 +186,38 @@ export const UserProvider = ({ children }) => {
     setDeleteModalOpen(false);
   };
 
-  const updateUser = async (userId, updatedUser) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedUser),
-        }
-      );
-      if (response.ok) {
-        const newUser = await response.json();
-        setUsers((prevUsers) =>
-          prevUsers.map((user) => (user.id === userId ? newUser.user : user))
-        );
-        setAlert({ open: true, message: "User Updated", severity: "success" });
-      } else {
-        console.error("Error updating user:", response.statusText);
-        setAlert({
-          open: true,
-          message: "failed to update user",
-          severity: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-    } finally {
-      setTimeout(() => {
-        setAlert({ open: false, message: "", severity: "success" });
-      }, 3000);
-    }
-  };
+  // const updateUser = async (userId, updatedUser) => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:3083/users/api/data/${userId}`,
+  //       {
+  //         method: "PUT",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify(updatedUser),
+  //       }
+  //     );
+  //     if (response.ok) {
+  //       const newUser = await response.json();
+  //       setUsers((prevUsers) =>
+  //         prevUsers.map((user) => (user.id === userId ? newUser.user : user))
+  //       );
+  //       setAlert({ open: true, message: "User Updated", severity: "success" });
+  //     } else {
+  //       console.error("Error updating user:", response.statusText);
+  //       setAlert({
+  //         open: true,
+  //         message: "failed to update user",
+  //         severity: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating user:", error);
+  //   } finally {
+  //     setTimeout(() => {
+  //       setAlert({ open: false, message: "", severity: "success" });
+  //     }, 3000);
+  //   }
+  // };
 
   return (
     <UserContext.Provider
@@ -230,9 +230,9 @@ export const UserProvider = ({ children }) => {
         handleOpenModal,
         handleCloseModal,
         loading,
-        addUser,
+        // addUser,
         deleteUser,
-        updateUser,
+        // updateUser,
         defaultImg,
         currentUser,
         handleUpdateUser,
@@ -247,6 +247,7 @@ export const UserProvider = ({ children }) => {
         userEmail,
         userPassword,
         sumbitResult,
+        setAlert,
       }}
     >
       {children}

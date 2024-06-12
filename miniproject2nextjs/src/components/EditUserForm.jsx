@@ -6,7 +6,8 @@ import { formEditStyle } from "../../themes/makingStyles";
 
 export default function EditUserForm({ userId, setIsEditing }) {
   // get context from context file
-  const { users, updateUser, handleCloseModal } = useUserContext();
+  const { users, updateUser, handleCloseModal, setUsers, setAlert } =
+    useUserContext();
 
   // crete user and setUser state like the initialUserData
   const [user, setUser] = useState({
@@ -57,6 +58,43 @@ export default function EditUserForm({ userId, setIsEditing }) {
   // handle submit
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const updateUser = async (userId, updatedUser) => {
+      try {
+        const response = await fetch(
+          `http://localhost:3083/users/api/data/${userId}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedUser),
+          }
+        );
+        if (response.ok) {
+          const newUser = await response.json();
+          setUsers((prevUsers) =>
+            prevUsers.map((user) => (user.id === userId ? newUser.user : user))
+          );
+          setAlert({
+            open: true,
+            message: "User Updated",
+            severity: "success",
+          });
+        } else {
+          console.error("Error updating user:", response.statusText);
+          setAlert({
+            open: true,
+            message: "failed to update user",
+            severity: "error",
+          });
+        }
+      } catch (error) {
+        console.error("Error updating user:", error);
+      } finally {
+        setTimeout(() => {
+          setAlert({ open: false, message: "", severity: "success" });
+        }, 3000);
+      }
+    };
 
     // ucall updateUser function in UserContext.jsx file and pass props user.id and user
     await updateUser(user.id, user);

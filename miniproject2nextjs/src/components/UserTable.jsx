@@ -25,7 +25,6 @@ import { useUserContext } from "@/context/UserContext";
 import { Avatar, Button, ListItemAvatar, Modal } from "@mui/material";
 import EditUserForm from "./EditUserForm";
 import BasicModal from "./Modal";
-import { theme } from "../../themes/makingStyles";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
