@@ -1,54 +1,64 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
+    "title": "User Data API",
     "version": "1.0.0",
-    "title": "User API",
-    "description": "API documentation for the User management system"
+    "description": "API for managing user data"
   },
-  "host": "localhost:3083",
-  "basePath": "/",
-  "schemes": ["http"],
+  "servers": [
+    {
+      "url": "http://localhost:3083"
+    }
+  ],
   "paths": {
     "/users/api/data": {
       "get": {
         "summary": "Get all users",
-        "description": "Retrieve a list of all users",
-        "produces": ["application/json"],
+        "operationId": "getUsers",
         "responses": {
           "200": {
             "description": "A list of users",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
               }
             }
-          },
-          "500": {
-            "description": "Internal server error"
           }
         }
       },
       "post": {
         "summary": "Add a new user",
-        "description": "Create a new user with the provided data",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/NewUser"
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "User data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUser"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "User created",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
           },
           "400": {
@@ -60,21 +70,26 @@
     "/users/api/data/{userId}": {
       "get": {
         "summary": "Get user by ID",
-        "description": "Retrieve a user by their ID",
-        "produces": ["application/json"],
+        "operationId": "getUserById",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer"
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "User details",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
           },
           "404": {
@@ -84,30 +99,45 @@
       },
       "put": {
         "summary": "Update user by ID",
-        "description": "Update an existing user's information",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "operationId": "updateUser",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
             "schema": {
-              "$ref": "#/definitions/NewUser"
+              "type": "integer"
             }
           }
         ],
+        "requestBody": {
+          "description": "Updated user data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "User updated",
-            "schema": {
-              "$ref": "#/definitions/User"
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
             }
           },
           "404": {
@@ -117,19 +147,32 @@
       },
       "delete": {
         "summary": "Delete user by ID",
-        "description": "Delete a user by their ID",
-        "produces": ["application/json"],
+        "operationId": "deleteUser",
         "parameters": [
           {
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "integer"
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "User deleted"
+            "description": "User deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "404": {
             "description": "User not found"
@@ -138,52 +181,52 @@
       }
     }
   },
-  "definitions": {
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "example": 1
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
         },
-        "firstName": {
-          "type": "string",
-          "example": "John"
+        "required": ["id", "firstName", "lastName", "email"]
+      },
+      "NewUser": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          }
         },
-        "lastName": {
-          "type": "string",
-          "example": "Doe"
-        },
-        "image": {
-          "type": "string",
-          "example": "http://example.com/image.jpg"
-        },
-        "phone": {
-          "type": "string",
-          "example": "555-555-5555"
-        }
-      }
-    },
-    "NewUser": {
-      "type": "object",
-      "required": ["firstName", "lastName"],
-      "properties": {
-        "firstName": {
-          "type": "string",
-          "example": "John"
-        },
-        "lastName": {
-          "type": "string",
-          "example": "Doe"
-        },
-        "image": {
-          "type": "string",
-          "example": "http://example.com/image.jpg"
-        },
-        "phone": {
-          "type": "string",
-          "example": "555-555-5555"
-        }
+        "required": ["firstName", "lastName", "email"]
       }
     }
   }

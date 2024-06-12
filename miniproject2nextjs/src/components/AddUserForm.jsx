@@ -4,8 +4,11 @@ import { AddUserFormStyle, formEditStyle } from "../../themes/makingStyles";
 
 const { useState } = require("react");
 
+// form for adding new user
 export default function AddUserForm({ closeModal }) {
-  const { addUser, defaultImg, handleCloseModal } = useUserContext();
+  const { addUser, defaultImg } = useUserContext();
+
+  // create variable object with values to fill for the form data
   const initialUserData = {
     firstName: "",
     lastName: "",
@@ -13,41 +16,54 @@ export default function AddUserForm({ closeModal }) {
     image: "",
     phone: "",
   };
+
+  // create a user and setUser state and set it to the valuse of the initialUserData
   const [user, setUser] = useState(initialUserData);
 
   // handel submitting form
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user);
+    // call addUser function from context passing in the user as prop
     await addUser(user);
+    // if response is successful setUser state to initialUserData
     setUser(initialUserData);
+    // then close modal
     closeModal();
   };
 
   // handel cahange when selecting / typing in form items
   const handleChange = (event) => {
+    // setUser to name:value of the changed item
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
   // handle change when changing images in form item
   const handleImageChange = (event) => {
+    // get first file if multipe selected and store in file variable
     const file = event.target.files[0];
+    // file path reader
     const reader = new FileReader();
 
+    // when the reader has changed the file to a readable url
     reader.onloadend = () => {
+      // setUser  to copy of user and the values image: reader.result
       setUser({ ...user, image: reader.result });
     };
 
+    // if the file exists
     if (file) {
+      // read the file path and change to a readable url
       reader.readAsDataURL(file);
     }
   };
-  // useEffect(() => {});
 
   return (
     <Container>
+      {/* form on submit handleSubmit */}
       <form onSubmit={handleSubmit}>
         <Card sx={{ maxWidth: 345 }}>
+          {/* display image  */}
           <CardMedia
             sx={{ height: 140 }}
             image={user.image || defaultImg}
@@ -56,9 +72,6 @@ export default function AddUserForm({ closeModal }) {
 
           {/* Image Choice */}
           <div style={formEditStyle}>
-            {/* <label htmlFor="file">
-              <h3>Add Image:</h3>
-            </label> */}
             <Button
               variant="contained"
               component="label"
@@ -122,6 +135,7 @@ export default function AddUserForm({ closeModal }) {
               required
             />
 
+            {/* Phone */}
             <TextField
               type="number"
               id="phone"
@@ -132,6 +146,7 @@ export default function AddUserForm({ closeModal }) {
               style={formEditStyle.textMargin}
             />
             <div style={{ marginTop: "10px" }}>
+              {/* Submit Button */}
               <Button
                 style={{ height: "30px" }}
                 type="submit"
@@ -139,11 +154,13 @@ export default function AddUserForm({ closeModal }) {
               >
                 Submit
               </Button>
+
+              {/* Cancel Button */}
               <Button
                 style={{ height: "30px" }}
                 variant="contained"
                 size="small"
-                onClick={() => handleCloseModal()}
+                onClick={() => closeModal()}
                 color="error"
               >
                 Cancel

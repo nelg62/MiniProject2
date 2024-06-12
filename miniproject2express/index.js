@@ -7,6 +7,7 @@ swaggerDocument = require("./swagger.json");
 const app = express();
 const port = 3083;
 
+// swagger file location
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // added a limit to allow the express server side to recieve files as the images were being blocked for being to large

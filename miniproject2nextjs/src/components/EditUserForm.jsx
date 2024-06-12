@@ -5,7 +5,10 @@ import Card from "@mui/material/Card";
 import { formEditStyle } from "../../themes/makingStyles";
 
 export default function EditUserForm({ userId, setIsEditing }) {
-  const { users, updateUser, defaultImg, handleCloseModal } = useUserContext();
+  // get context from context file
+  const { users, updateUser, handleCloseModal } = useUserContext();
+
+  // crete user and setUser state like the initialUserData
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -14,14 +17,20 @@ export default function EditUserForm({ userId, setIsEditing }) {
     phone: "",
   });
 
+  // if userId or users change
   useEffect(() => {
+    // create variable userData find user with id matching current user.id in userId
     const userData = users.find((user) => user.id === userId);
+    // if id is found
     if (userData) {
+      // set the userData
       setUser(userData);
     }
   }, [userId, users]);
 
+  // handle change when changing things in form
   const handleChange = (event) => {
+    //  use setUser to update copy of user with name:value
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 

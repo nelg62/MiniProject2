@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
+// default styling for Box
 const style = {
   position: "absolute",
   top: "50%",
@@ -16,6 +17,7 @@ const style = {
   p: 4,
 };
 
+// modal for confirming deletion of user object
 export default function DeleteConfirmation({
   open,
   handleClose,

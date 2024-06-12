@@ -8,22 +8,26 @@ import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 
 export default function Users() {
-  const { currentUser, loading } = useUserContext();
+  const { currentUser } = useUserContext();
   const router = useRouter();
 
+  // check currentUser if it has changed
   useEffect(() => {
+    // if currentUser does not have an email
     if (!currentUser.email) {
+      // redirect to login page
       router.push("/login");
     }
   }, [currentUser]);
 
-  // users page
+  // usersTable page
   return (
     <div>
-      <h1>Users</h1>
-      {/* display AddUserModal button and pass prop handleUserAdded  */}
+      <h1>UsersTable</h1>
+      {/* display AddUserModal button */}
       <AddUserModal />
 
+      {/* display UserTable component */}
       <EnhancedTable />
     </div>
   );

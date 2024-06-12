@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { useUserContext } from "@/context/UserContext";
 
 export default function Home() {
-  const { currentUser, loading } = useUserContext();
+  const { currentUser } = useUserContext();
   const router = useRouter();
 
+  // check currentUser if it has changed
   useEffect(() => {
-    if (!loading && !currentUser.email) {
+    // if currentUser does not have an email
+    if (!currentUser.email) {
+      // redirect to login page
       router.push("/login");
     }
-  }, [currentUser, loading]);
+  }, [currentUser]);
 
-  if (loading) return <div>Loading...</div>;
-
+  // home page
   return (
     <>
       <h1>Welcome</h1>

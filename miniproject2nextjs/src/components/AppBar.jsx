@@ -17,6 +17,7 @@ import Link from "next/link";
 import { theme } from "../../themes/makingStyles";
 import { useUserContext } from "@/context/UserContext";
 
+// arrays to display the pages you want in navigation bar
 const pages = ["dashboard", "users", "userstable", "login"];
 const settings = ["Logout"];
 
@@ -24,6 +25,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+  // context for logging out
   const { handleUpdateUser } = useUserContext();
 
   const handleOpenNavMenu = (event) => {
@@ -156,6 +158,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
+                // added logout button to nav bar
                 <MenuItem key={setting} onClick={() => handleUpdateUser({})}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
