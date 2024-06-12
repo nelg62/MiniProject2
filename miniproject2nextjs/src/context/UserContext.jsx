@@ -4,6 +4,8 @@ import DeleteConfirmation from "@/components/DeleteConfirmation";
 import * as React from "react";
 import { useContext, useState } from "react";
 
+// try to update use context file remove non state things and put back to origional files look into event buss aswell if have time
+
 const UserContext = React.createContext();
 
 export const UserProvider = ({ children }) => {

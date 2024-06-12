@@ -17,7 +17,9 @@ import { useUserContext } from "@/context/UserContext";
 
 const theme = createTheme();
 
+// login page function
 export default function SignIn() {
+  // get context from UserContext.jsx
   const {
     currentUser,
     handleUpdateUser,
@@ -29,8 +31,9 @@ export default function SignIn() {
     handleSubmitLogin,
   } = useUserContext();
 
-  // if logged in
+  // if currentUser has email
   if (currentUser.email)
+    // show this if user has current email (currently redirectiong to dashboard via login/page.jsx)
     return (
       <>
         <p>Welcome {currentUser.email}!</p>
@@ -38,6 +41,7 @@ export default function SignIn() {
       </>
     );
 
+  // if currentUser does not have and email display this to ask for login page
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -65,6 +69,8 @@ export default function SignIn() {
             sx={{ mt: 1 }}
           >
             <h1>{sumbitResult}</h1>
+
+            {/* Email Field */}
             <TextField
               margin="normal"
               required
@@ -77,6 +83,8 @@ export default function SignIn() {
               value={userEmail}
               onChange={(e) => setUserEmail(e.target.value)}
             />
+
+            {/* Password Field */}
             <TextField
               margin="normal"
               required
@@ -93,6 +101,8 @@ export default function SignIn() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+
+            {/* Sign in Button */}
             <Button
               type="submit"
               fullWidth
@@ -101,18 +111,6 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid> */}
           </Box>
         </Box>
       </Container>

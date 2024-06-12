@@ -34,23 +34,33 @@ export default function EditUserForm({ userId, setIsEditing }) {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
+  // handle change when changing images in form item
   const handleImageChange = (event) => {
+    // get first file if multipe selected and store in file variable
     const file = event.target.files[0];
+    // file path reader
     const reader = new FileReader();
 
+    // when the reader has changed the file to a readable url
     reader.onloadend = () => {
+      // setUser  to copy of user and the values image: reader.result
       setUser({ ...user, image: reader.result });
     };
 
+    // if the file exists
     if (file) {
+      // read the file path and change to a readable url
       reader.readAsDataURL(file);
     }
   };
 
+  // handle submit
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // ucall updateUser function in UserContext.jsx file and pass props user.id and user
     await updateUser(user.id, user);
+    // set is editing to false to change modal view
     setIsEditing(false);
   };
 
@@ -58,18 +68,15 @@ export default function EditUserForm({ userId, setIsEditing }) {
     <Container>
       <form onSubmit={handleSubmit}>
         <Card sx={{ maxWidth: 345 }}>
-          {/* Image Choice */}
-
+          {/* display image  */}
           <CardMedia
             sx={{ height: 140 }}
             image={user.image}
             title={user.firstName}
           />
-          <div style={formEditStyle}>
-            {/* <label htmlFor="file">
-              <h3>Change Image:</h3>{" "}
-            </label> */}
 
+          {/* Image Choice */}
+          <div style={formEditStyle}>
             <Button
               variant="contained"
               component="label"
@@ -98,15 +105,6 @@ export default function EditUserForm({ userId, setIsEditing }) {
                 }
               />
             </Button>
-
-            {/* <input
-              type="file"
-              accept="image/*"
-              name="image"
-              id="file"
-              onChange={handleImageChange}
-              style={formEditStyle.textMargin}
-            /> */}
 
             {/* First Name */}
             <TextField
@@ -141,6 +139,7 @@ export default function EditUserForm({ userId, setIsEditing }) {
               style={formEditStyle.textMargin}
             />
 
+            {/* Phone */}
             <TextField
               type="number"
               id="phone"
@@ -150,10 +149,14 @@ export default function EditUserForm({ userId, setIsEditing }) {
               onChange={handleChange}
               style={formEditStyle.textMargin}
             />
+
+            {/* Submit Button */}
             <div style={{ marginTop: "10px" }}>
               <Button variant="contained" type="submit">
                 Submit
               </Button>
+
+              {/* Cancel Button */}
               <Button
                 variant="contained"
                 onClick={() => {

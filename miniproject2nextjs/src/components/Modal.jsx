@@ -8,6 +8,7 @@ import { useUserContext } from "@/context/UserContext";
 import { UserStyles, theme } from "../../themes/makingStyles";
 import MediaCard from "./ViewUserInfoCard";
 
+// default box styling
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,7 +21,9 @@ const style = {
   p: 4,
 };
 
+// basic modal function
 export default function BasicModal() {
+  // get context from UserContext.jsx
   const {
     modalOpen,
     handleCloseModal,
@@ -30,10 +33,8 @@ export default function BasicModal() {
     loading,
     fetchUserDetails,
   } = useUserContext();
-  // const [userData, setUserData] = React.useState(user || {});
-  // const [loading, setLoading] = React.useState(false);
-  // const { isEditing, setIsEditing } = useUserContext();
 
+  // if modalOpen and isEditing is false
   React.useEffect(() => {
     if (modalOpen && selectedUser && !isEditing) {
       fetchUserDetails(selectedUser.id);
