@@ -1,14 +1,14 @@
 import { Button, Card, CardMedia, Container, TextField } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
-import { AddUserFormStyle, formEditStyle } from "../../themes/makingStyles";
+import { formEditStyle } from "../../themes/makingStyles";
 
 const { useState } = require("react");
 
-// form for adding new user
+// Form component for adding a new user
 export default function AddUserForm({ closeModal }) {
   const { defaultImg } = useUserContext();
 
-  // create variable object with values to fill for the form data
+  // initial state for form data
   const initialUserData = {
     firstName: "",
     lastName: "",
@@ -17,42 +17,44 @@ export default function AddUserForm({ closeModal }) {
     phone: "",
   };
 
-  // create a user and setUser state and set it to the valuse of the initialUserData
+  // State to manage user input from form
   const [user, setUser] = useState(initialUserData);
 
+  // Destructuring context from UserContext.jsx
   const { setAlert, setUsers } = useUserContext();
 
-  // handel submitting form
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(user);
 
-    // edit this to remove the if statement as it is not neded as the try catch does the same thing remove the duplicate error log aswell
+    // addUser function
     const addUser = async (user) => {
-      setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
+      // Clear alert messages if any exist
+      setAlert({ open: false, message: "", severity: "success" });
+
       try {
+        // send POST request to backend addUser route to add user
         const response = await fetch("http://localhost:3083/users/api/data", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(user),
         });
-        if (response.ok) {
-          const newUser = await response.json();
-          setUsers((prevUsers) => [...prevUsers, newUser]);
-          setAlert({
-            open: true,
-            message: "User added successfully!",
-            severity: "success",
-          });
-        } else {
-          console.error("Error adding user:", response.statusText);
-          setAlert({
-            open: true,
-            message: "Failed to add user.",
-            severity: "error",
-          });
-        }
+
+        // Change response to JSON and assign to newUser
+        const newUser = await response.json();
+
+        // Update the users state in context with new user
+        setUsers((prevUsers) => [...prevUsers, newUser]);
+
+        // Display success message alert
+        setAlert({
+          open: true,
+          message: "User added successfully!",
+          severity: "success",
+        });
       } catch (error) {
+        // Log error and display error message alert
         console.error("Error adding user", error);
         setAlert({
           open: true,
@@ -60,59 +62,58 @@ export default function AddUserForm({ closeModal }) {
           severity: "error",
         });
       } finally {
+        // Hide alert after 3 seconds
         setTimeout(() => {
           setAlert({ open: false, message: "", severity: "success" });
-        }, 3000); // Hide the alert after 3 seconds
+        }, 3000);
       }
     };
 
-    // call addUser function from context passing in the user as prop
+    //  Call addUser function and pass user data
     await addUser(user);
-    // if response is successful setUser state to initialUserData
+
+    // Reset form fields to initial state
     setUser(initialUserData);
-    // then close modal
+
+    // Close modal after form submission
     closeModal();
   };
 
-  // handel cahange when selecting / typing in form items
+  // Handle input change in form fields
   const handleChange = (event) => {
-    // setUser to name:value of the changed item
+    // Update user fields in state by name:value
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  // handle change when changing images in form item
+  // Handle image upload
   const handleImageChange = (event) => {
-    // get first file if multipe selected and store in file variable
     const file = event.target.files[0];
-    // file path reader
     const reader = new FileReader();
 
-    // when the reader has changed the file to a readable url
+    // When file reading i complete update user state with image URL
     reader.onloadend = () => {
-      // setUser  to copy of user and the values image: reader.result
       setUser({ ...user, image: reader.result });
     };
 
-    // if the file exists
+    // Read file as URL
     if (file) {
-      // read the file path and change to a readable url
       reader.readAsDataURL(file);
     }
   };
 
   return (
     <Container>
-      {/* form on submit handleSubmit */}
+      {/* addUser form  */}
       <form onSubmit={handleSubmit}>
         <Card sx={{ maxWidth: 345 }}>
-          {/* display image  */}
+          {/* display user image  */}
           <CardMedia
             sx={{ height: 140 }}
             image={user.image || defaultImg}
             title={user.firstName}
           />
 
-          {/* Image Choice */}
+          {/* Image upload Button */}
           <div style={formEditStyle}>
             <Button
               variant="contained"

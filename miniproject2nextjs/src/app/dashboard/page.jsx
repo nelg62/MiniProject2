@@ -6,7 +6,11 @@ import Link from "next/link";
 // dashboard page
 export default function Dashboard() {
   // get context variables and functions
-  const { currentUser, handleUpdateUser } = useUserContext();
+  const { currentUser, setCurrentUser } = useUserContext();
+
+  const handleUpdateUser = (user) => {
+    setCurrentUser(user);
+  };
   return (
     <>
       {/* check if currentUser has an email or not */}

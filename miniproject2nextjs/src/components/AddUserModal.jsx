@@ -1,10 +1,9 @@
 import { Box, Button, Container, Modal, Paper } from "@mui/material";
 import { useState } from "react";
 import AddUserForm from "./AddUserForm";
-import { BoxStyle, theme } from "../../themes/makingStyles";
-import { Style } from "@mui/icons-material";
+import { theme } from "../../themes/makingStyles";
 
-// default styling for box
+// Default styling for the modal box
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,25 +17,29 @@ const style = {
 };
 
 export default function AddUserModal() {
-  // create state for modal for user form as state in context requires id
+  // State for managing the modal open/close state
   const [open, setOpen] = useState(false);
+
+  // Function to open the modal
   const handleOpen = () => setOpen(true);
+
+  // Function to close the modal
   const handleClose = () => setOpen(false);
 
   return (
     <Container>
-      {/* button to open Modal for AddUserForm on click trigger function handle open */}
+      {/* Button to open modal */}
       <Button variant="contained" onClick={handleOpen}>
         Add User
       </Button>
 
-      {/* modal to display the AddUserForm  pass props open and handleClose*/}
+      {/* Modal Component*/}
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={style}
           style={{ backgroundColor: theme.colors.background.lightGray }}
         >
-          {/* addUserForm passing prop handleClose */}
+          {/* AddUserForm component */}
           <AddUserForm closeModal={handleClose}></AddUserForm>
         </Box>
       </Modal>

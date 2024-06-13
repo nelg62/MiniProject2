@@ -158,13 +158,49 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
   const { numSelected, selected, setSelected } = props;
 
-  const { deleteUser, setIsEditing, handleOpenModal } = useUserContext();
+  const {
+    setUserToDelete,
+    setDeleteModalOpen,
+    setModalOpen,
+    setLoading,
+    setSelectedUser,
+  } = useUserContext();
 
+  // Function to fetch user details from GET route getUserById
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`
+      );
+
+      const userData = await response.json();
+      setSelectedUser(userData.result);
+    } catch (error) {
+      console.error("error getting user details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Open modal and fetch user details
+  const handleOpenModal = (userId) => {
+    setModalOpen(true);
+    fetchUserDetails(userId);
+  };
+
+  // Confirm delete user
+  const confirmDeleteUser = (userId) => {
+    setUserToDelete(userId);
+    setDeleteModalOpen(true);
+  };
+
+  // Handle delete action for selected user
   const handleDelete = () => {
     console.log("selected", selected);
     console.log("selected length", selected.length);
     if (selected && selected.length > 0) {
-      selected.forEach((id) => deleteUser(id));
+      selected.forEach((id) => confirmDeleteUser(id));
       setSelected([]);
     }
   };
@@ -232,6 +268,7 @@ EnhancedTableToolbar.propTypes = {
   selected: PropTypes.array.isRequired,
 };
 
+// Main table component
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -241,26 +278,56 @@ export default function EnhancedTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedUserId, setSelectedUserId] = React.useState(null);
-  const [selectedUser, setSelectedUser] = React.useState(null);
 
   const {
     users,
-    deleteUser,
-    isEditing,
-    setIsEditing,
-    handleClose,
-    userId,
-    handleOpenModal,
-    confirmDeleteUser,
+    setModalOpen,
+    setUserToDelete,
+    setDeleteModalOpen,
+    setLoading,
+    setSelectedUser,
+    selectedUser,
   } = useUserContext();
+
+  // Function to fetch user details from GET route getUserById
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`
+      );
+
+      const userData = await response.json();
+      setSelectedUser(userData.result);
+    } catch (error) {
+      console.error("error getting user details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Open modal and fetch user details
+  const handleOpenModal = (userId) => {
+    setModalOpen(true);
+    fetchUserDetails(userId);
+  };
+
+  // Confirm delete user
+  const confirmDeleteUser = (userId) => {
+    setUserToDelete(userId);
+    setDeleteModalOpen(true);
+  };
+
   console.log("users", users);
 
+  // Handle change sort order
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
+  // Handle select all items
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = users.map((n) => n.id);
@@ -270,27 +337,19 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
+  // Handle modal close
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedUserId(null);
     setSelectedUser(null);
   };
 
+  // Handle click on edit button to open modal
   const handleEditClick = (userId) => {
     handleOpenModal(userId);
-    // setSelected([id]);
-    // setSelectedUserId(id);
-    // setOpenModal(true);
-    // setIsEditing(true);
   };
 
-  // const handleDeleteClick = (id) => {
-  //   deleteUser(id);
-  //   setSelected((prevSelected) =>
-  //     prevSelected.filter((selectedId) => selectedId !== id)
-  //   );
-  // };
-
+  // Handle clicking on row to select
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -311,10 +370,12 @@ export default function EnhancedTable() {
     setSelected(newSelected);
   };
 
+  // handle change page
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // handle channge rows per page display
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -326,7 +387,6 @@ export default function EnhancedTable() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -393,10 +453,12 @@ export default function EnhancedTable() {
                         scope="row"
                         padding="none"
                       >
+                        {/* set table image of user */}
                         <ListItemAvatar>
                           <Avatar alt={row.firstName} src={row.image} />
                         </ListItemAvatar>
                       </TableCell>
+                      {/* Set user data on table */}
                       <TableCell align="right">{row.firstName}</TableCell>
                       <TableCell align="right">{row.lastName}</TableCell>
                       <TableCell align="right">{row.phone}</TableCell>
@@ -446,6 +508,7 @@ export default function EnhancedTable() {
           label="Dense padding"
         />
       </Box>
+      {/* Basic modal passing props  */}
       <BasicModal
         open={openModal}
         onClose={handleCloseModal}

@@ -4,12 +4,26 @@ import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import { formEditStyle } from "../../themes/makingStyles";
 
-export default function EditUserForm({ userId, setIsEditing }) {
-  // get context from context file
-  const { users, updateUser, handleCloseModal, setUsers, setAlert } =
-    useUserContext();
+export default function EditUserForm({ userId }) {
+  // Destructure context from UserContext.jsx
+  const {
+    users,
+    updateUser,
+    setModalOpen,
+    setSelectedUser,
+    setIsEditing,
+    setUsers,
+    setAlert,
+  } = useUserContext();
 
-  // crete user and setUser state like the initialUserData
+  // Function to close modal and reset state
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
+    setIsEditing(false);
+  };
+
+  // State for managing user data
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -18,44 +32,37 @@ export default function EditUserForm({ userId, setIsEditing }) {
     phone: "",
   });
 
-  // if userId or users change
+  // Fetch user data based on user id when userId or users change
   useEffect(() => {
-    // create variable userData find user with id matching current user.id in userId
     const userData = users.find((user) => user.id === userId);
-    // if id is found
     if (userData) {
-      // set the userData
       setUser(userData);
     }
   }, [userId, users]);
 
-  // handle change when changing things in form
+  // Handle changes in form fields
   const handleChange = (event) => {
-    //  use setUser to update copy of user with name:value
+    // Update user fields in state by name:value
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  // handle change when changing images in form item
+  // Handle image upload and preview
   const handleImageChange = (event) => {
-    // get first file if multipe selected and store in file variable
     const file = event.target.files[0];
-    // file path reader
     const reader = new FileReader();
 
-    // when the reader has changed the file to a readable url
+    // When file reading i complete update user state with image URL
     reader.onloadend = () => {
-      // setUser  to copy of user and the values image: reader.result
       setUser({ ...user, image: reader.result });
     };
 
-    // if the file exists
+    // Read file as URL
     if (file) {
-      // read the file path and change to a readable url
       reader.readAsDataURL(file);
     }
   };
 
-  // handle submit
+  // Handle form submit  PUT request to backend updateUser
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -69,36 +76,39 @@ export default function EditUserForm({ userId, setIsEditing }) {
             body: JSON.stringify(updatedUser),
           }
         );
-        if (response.ok) {
-          const newUser = await response.json();
-          setUsers((prevUsers) =>
-            prevUsers.map((user) => (user.id === userId ? newUser.user : user))
-          );
-          setAlert({
-            open: true,
-            message: "User Updated",
-            severity: "success",
-          });
-        } else {
-          console.error("Error updating user:", response.statusText);
-          setAlert({
-            open: true,
-            message: "failed to update user",
-            severity: "error",
-          });
-        }
+
+        const newUser = await response.json();
+
+        // Update local users state after succesful update
+        setUsers((prevUsers) =>
+          prevUsers.map((user) => (user.id === userId ? newUser.user : user))
+        );
+
+        // Show success alert
+        setAlert({
+          open: true,
+          message: "User Updated",
+          severity: "success",
+        });
       } catch (error) {
         console.error("Error updating user:", error);
+        // Show error alert
+        setAlert({
+          open: true,
+          message: "Failed to update user",
+          severity: "error",
+        });
       } finally {
+        // Hide alert after 3 sconds
         setTimeout(() => {
           setAlert({ open: false, message: "", severity: "success" });
         }, 3000);
       }
     };
 
-    // ucall updateUser function in UserContext.jsx file and pass props user.id and user
+    // Call updateUser Function and pass user.id and user and props
     await updateUser(user.id, user);
-    // set is editing to false to change modal view
+    // Set isEditing to false to exit edit mode
     setIsEditing(false);
   };
 
@@ -106,14 +116,14 @@ export default function EditUserForm({ userId, setIsEditing }) {
     <Container>
       <form onSubmit={handleSubmit}>
         <Card sx={{ maxWidth: 345 }}>
-          {/* display image  */}
+          {/* Display user image  */}
           <CardMedia
             sx={{ height: 140 }}
             image={user.image}
             title={user.firstName}
           />
 
-          {/* Image Choice */}
+          {/* Image upload button */}
           <div style={formEditStyle}>
             <Button
               variant="contained"

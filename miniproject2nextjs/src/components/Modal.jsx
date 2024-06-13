@@ -8,7 +8,7 @@ import { useUserContext } from "@/context/UserContext";
 import { UserStyles, theme } from "../../themes/makingStyles";
 import MediaCard from "./ViewUserInfoCard";
 
-// default box styling
+// Default styling for the modal box
 const style = {
   position: "absolute",
   top: "50%",
@@ -21,20 +21,45 @@ const style = {
   p: 4,
 };
 
-// basic modal function
+// Component for Basic Modal from MUI
 export default function BasicModal() {
-  // get context from UserContext.jsx
+  // Destructuere context from UserContext.jsx
   const {
     modalOpen,
-    handleCloseModal,
+    setModalOpen,
     selectedUser,
     isEditing,
     setIsEditing,
     loading,
-    fetchUserDetails,
+    setLoading,
+    setSelectedUser,
   } = useUserContext();
 
-  // if modalOpen and isEditing is false
+  // Function to handle modal close and reset state
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setSelectedUser(null);
+    setIsEditing(false);
+  };
+
+  // Function to fetch user details from GET route getUserById
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`
+      );
+
+      const userData = await response.json();
+      setSelectedUser(userData.result);
+    } catch (error) {
+      console.error("error getting user details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect to call Function fetchUserDetails and pass selectedUser.id as prop when modal is open and isEditing is false
   React.useEffect(() => {
     if (modalOpen && selectedUser && !isEditing) {
       fetchUserDetails(selectedUser.id);
@@ -43,6 +68,7 @@ export default function BasicModal() {
 
   return (
     <div>
+      {/* Conditional render to render EditUserForm or MediaCard bassed on the isEditing state being true or false  */}
       {isEditing ? (
         <Modal
           open={modalOpen}

@@ -4,82 +4,35 @@ import DeleteConfirmation from "@/components/DeleteConfirmation";
 import * as React from "react";
 import { useContext, useState } from "react";
 
-// try to update use context file remove non state things and put back to origional files look into event buss aswell if have time
-
+// Create the UseContext
 const UserContext = React.createContext();
 
+// UserProvider component to provide context values
 export const UserProvider = ({ children }) => {
+  // State variables and functions
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // Alert state
   const [alert, setAlert] = useState({
     open: false,
     message: "",
     severity: "success",
   });
-
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
+  // Default image for users
   const defaultImg = "user.png";
 
+  // Staes for users authentication
   const [userEmail, setUserEmail] = React.useState("");
   const [userPassword, setUserPassword] = React.useState("");
   const [sumbitResult, setSubmitResult] = React.useState("");
 
-  // on submit of login
-  const handleSubmitLogin = (event) => {
-    event.preventDefault();
-
-    // check password requirements
-    if (userPassword.length < 5) {
-      setSubmitResult("Password must be at least 5 Characters long");
-    } else if (userPassword === userEmail) {
-      setSubmitResult("Password must not match email address");
-    } else {
-      setSubmitResult("Successful Login");
-      handleUpdateUser({ email: userEmail });
-    }
-  };
-
-  const fetchUserDetails = async (userId) => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`
-      );
-      if (!response.ok) {
-        throw new Error("failed to fetch user details");
-      }
-      const userData = await response.json();
-      setSelectedUser(userData.result);
-    } catch (error) {
-      console.error("error getting user details", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleOpenModal = (userId) => {
-    setModalOpen(true);
-    fetchUserDetails(userId);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-    setSelectedUser(null);
-    setIsEditing(false);
-  };
-
-  const handleUpdateUser = (user) => {
-    setCurrentUser(user);
-  };
-
+  // Fetch users data on start from backend GET route getUsers
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -93,132 +46,6 @@ export const UserProvider = ({ children }) => {
     fetchUsers();
   }, []);
 
-  // const addUser = async (user) => {
-  //   setAlert({ open: false, message: "", severity: "success" }); // Initialize alert state
-  //   try {
-  //     const response = await fetch("http://localhost:3083/users/api/data", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(user),
-  //     });
-  //     if (response.ok) {
-  //       const newUser = await response.json();
-  //       setUsers((prevUsers) => [...prevUsers, newUser]);
-  //       setAlert({
-  //         open: true,
-  //         message: "User added successfully!",
-  //         severity: "success",
-  //       });
-  //     } else {
-  //       console.error("Error adding user:", response.statusText);
-  //       setAlert({
-  //         open: true,
-  //         message: "Failed to add user.",
-  //         severity: "error",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding user", error);
-  //     setAlert({
-  //       open: true,
-  //       message: "Failed to add user.",
-  //       severity: "error",
-  //     });
-  //   } finally {
-  //     setTimeout(() => {
-  //       setAlert({ open: false, message: "", severity: "success" });
-  //     }, 3000); // Hide the alert after 3 seconds
-  //   }
-  // };
-
-  const deleteUser = async (userId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`,
-        {
-          method: "DELETE",
-        }
-      );
-      if (response.ok) {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-        setAlert({
-          open: true,
-          message: "user deleted successfully",
-          severity: "success",
-        });
-      } else {
-        console.error("Error deleting user:", response.statusText);
-        setAlert({
-          open: true,
-          message: "failed to delete user",
-          severity: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      setAlert({
-        open: true,
-        message: "failed to delete user",
-        severity: "error",
-      });
-    } finally {
-      setTimeout(() => {
-        setAlert({ open: false, message: "", severity: "success" });
-      }, 3000);
-    }
-  };
-
-  const confirmDeleteUser = (userId) => {
-    setUserToDelete(userId);
-    setDeleteModalOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (userToDelete) {
-      await deleteUser(userToDelete);
-      setUserToDelete(null);
-      setDeleteModalOpen(false);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setUserToDelete(null);
-    setDeleteModalOpen(false);
-  };
-
-  // const updateUser = async (userId, updatedUser) => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:3083/users/api/data/${userId}`,
-  //       {
-  //         method: "PUT",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify(updatedUser),
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       const newUser = await response.json();
-  //       setUsers((prevUsers) =>
-  //         prevUsers.map((user) => (user.id === userId ? newUser.user : user))
-  //       );
-  //       setAlert({ open: true, message: "User Updated", severity: "success" });
-  //     } else {
-  //       console.error("Error updating user:", response.statusText);
-  //       setAlert({
-  //         open: true,
-  //         message: "failed to update user",
-  //         severity: "error",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating user:", error);
-  //   } finally {
-  //     setTimeout(() => {
-  //       setAlert({ open: false, message: "", severity: "success" });
-  //     }, 3000);
-  //   }
-  // };
-
   return (
     <UserContext.Provider
       value={{
@@ -227,20 +54,11 @@ export const UserProvider = ({ children }) => {
         selectedUser,
         setSelectedUser,
         modalOpen,
-        handleOpenModal,
-        handleCloseModal,
         loading,
-        // addUser,
-        deleteUser,
-        // updateUser,
         defaultImg,
         currentUser,
-        handleUpdateUser,
         isEditing,
         setIsEditing,
-        fetchUserDetails,
-        confirmDeleteUser,
-        handleSubmitLogin,
         setUserPassword,
         setUserEmail,
         setSubmitResult,
@@ -248,21 +66,26 @@ export const UserProvider = ({ children }) => {
         userPassword,
         sumbitResult,
         setAlert,
+        setUserToDelete,
+        setDeleteModalOpen,
+        userToDelete,
+        setLoading,
+        setModalOpen,
+        setCurrentUser,
       }}
     >
       {children}
+      {/* If alert is open push props to SimpleAlert  */}
       {alert.open && (
         <SimpleAlert message={alert.message} severity={alert.severity} />
       )}
-      <DeleteConfirmation
-        open={deleteModalOpen}
-        handleClose={handleCancelDelete}
-        handleConfirm={handleConfirmDelete}
-      />
+      {/* If delete is cliced open DeleteConfirmation  */}
+      <DeleteConfirmation open={deleteModalOpen} />
     </UserContext.Provider>
   );
 };
 
+// Custom hook to use the UserContext
 export const useUserContext = () => {
   return useContext(UserContext);
 };

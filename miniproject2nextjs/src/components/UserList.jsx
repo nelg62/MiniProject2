@@ -16,10 +16,47 @@ import {
   userListItemStyle,
 } from "../../themes/makingStyles";
 
-// recieve users prop and onDeleteUser from users/page
+// Component to display a list of users
 export default function CheckboxListSecondary() {
-  const { users, confirmDeleteUser, handleOpenModal } = useUserContext();
+  const {
+    users,
+    setUserToDelete,
+    setModalOpen,
+    setDeleteModalOpen,
+    setLoading,
+    setSelectedUser,
+  } = useUserContext();
 
+  // Function to fetch user details from GET route getUserById
+  const fetchUserDetails = async (userId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:3083/users/api/data/${userId}`
+      );
+
+      const userData = await response.json();
+      setSelectedUser(userData.result);
+    } catch (error) {
+      console.error("error getting user details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Function to confirm delete of a user
+  const confirmDeleteUser = (userId) => {
+    setUserToDelete(userId);
+    setDeleteModalOpen(true);
+  };
+
+  // Function to open modal and fetch user data on a clicked list item
+  const handleOpenModal = (userId) => {
+    setModalOpen(true);
+    fetchUserDetails(userId);
+  };
+
+  // makes sure the users list is not null
   const userList = users ?? [];
 
   return (
@@ -27,7 +64,7 @@ export default function CheckboxListSecondary() {
       <Box>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <List dense sx={{ width: "100%" }}>
-            {/* mapp users to show data on list */}
+            {/* Map users array and render each user  */}
             {userList.map((user) => {
               const labelId = `checkbox-list-secondary-label-${user.id}`;
               return (
@@ -40,6 +77,7 @@ export default function CheckboxListSecondary() {
                       </IconButton>
                     </>
                   }
+                  // Styling for ListItem
                   sx={{
                     pl: { sm: 2 },
                     pr: { xs: 1, sm: 1 },
@@ -48,10 +86,13 @@ export default function CheckboxListSecondary() {
                   }}
                   disablePadding
                 >
+                  {/* ListItemButton to handle clicking on list item */}
                   <ListItemButton onClick={() => handleOpenModal(user.id)}>
+                    {/* Displaying user picture */}
                     <ListItemAvatar>
                       <Avatar alt={user.firstName} src={user.image} />
                     </ListItemAvatar>
+                    {/* Display user full name */}
                     <ListItemText
                       id={labelId}
                       primary={
@@ -65,6 +106,7 @@ export default function CheckboxListSecondary() {
               );
             })}
           </List>
+          {/* Show BasicModal component for when editing */}
           <BasicModal />
         </Paper>
       </Box>
