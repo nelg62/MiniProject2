@@ -18,7 +18,7 @@ import { theme } from "../../themes/makingStyles";
 import { useUserContext } from "@/context/UserContext";
 
 // Array of pages to diplay in navigation bar
-const pages = ["dashboard", "users", "userstable", "login"];
+const pages = ["dashboard", "users", "userstable"];
 
 // Array of settings for user menu
 const settings = ["Logout"];
@@ -28,7 +28,7 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   // Context for currentUser context for logging out
-  const { setCurrentUser } = useUserContext();
+  const { setCurrentUser, currentUser } = useUserContext();
 
   // Function to update user context in this case just log out
   const handleUpdateUser = (user) => {
@@ -112,6 +112,13 @@ function ResponsiveAppBar() {
                   </Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link href={`/${!currentUser.email ? "login" : ""}`}>
+                    {!currentUser.email ? "Login" : ""}
+                  </Link>
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
@@ -147,6 +154,16 @@ function ResponsiveAppBar() {
                 <Link href={`/${page}`}>{page}</Link>
               </Button>
             ))}
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Typography textAlign="center">
+                <Link href={`/${!currentUser.email ? "login" : ""}`}>
+                  {!currentUser.email ? "Login" : ""}
+                </Link>
+              </Typography>
+            </Button>
           </Box>
 
           {/* Part of MUI component User settings menu */}
