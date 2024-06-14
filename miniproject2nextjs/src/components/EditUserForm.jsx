@@ -8,7 +8,6 @@ export default function EditUserForm({ userId }) {
   // Destructure context from UserContext.jsx
   const {
     users,
-    updateUser,
     setModalOpen,
     setSelectedUser,
     setIsEditing,

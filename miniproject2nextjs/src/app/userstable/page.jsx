@@ -1,21 +1,20 @@
 "use client";
 import AddUserModal from "@/components/AddUserModal";
-import CheckboxListSecondary from "@/components/UserList";
-import { useEffect, useState } from "react";
-import { UserDiv, UserList } from "../../../themes/makingStyles";
+import { useEffect } from "react";
 import EnhancedTable from "@/components/UserTable";
 import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 
-export default function Users() {
+// UserTable component
+export default function UsersTable() {
   const { currentUser } = useUserContext();
   const router = useRouter();
 
-  // check currentUser if it has changed
+  // useEffect to check currentUser when it changes
   useEffect(() => {
-    // if currentUser does not have an email
+    // If currentUser does not have an email
     if (!currentUser.email) {
-      // redirect to login page
+      // Redirect to login page
       router.push("/login");
     }
   }, [currentUser]);
@@ -24,10 +23,10 @@ export default function Users() {
   return (
     <div>
       <h1>UsersTable</h1>
-      {/* display AddUserModal button */}
+      {/* Display AddUserModal button */}
       <AddUserModal />
 
-      {/* display UserTable component */}
+      {/* Display UserTable component */}
       <EnhancedTable />
     </div>
   );

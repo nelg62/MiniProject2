@@ -1,11 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import EditUserForm from "./EditUserForm";
-import { Button } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
-import { UserStyles, theme } from "../../themes/makingStyles";
+import { theme } from "../../themes/makingStyles";
 import MediaCard from "./ViewUserInfoCard";
 
 // Default styling for the modal box
@@ -30,7 +28,6 @@ export default function BasicModal() {
     selectedUser,
     isEditing,
     setIsEditing,
-    loading,
     setLoading,
     setSelectedUser,
   } = useUserContext();

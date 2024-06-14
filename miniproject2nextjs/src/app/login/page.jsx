@@ -1,24 +1,24 @@
 "use client";
-import Link from "next/link";
 import SignUp from "@/components/LoginPage";
 import { useUserContext } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+// Login component
 export default function Login() {
   const { currentUser } = useUserContext();
   const router = useRouter();
 
-  // check currentUser if it has changed
+  // useEffect to check currentUser when it changes
   useEffect(() => {
-    // check if currentUser has an email
+    // Check if currentUser has an email
     if (currentUser.email) {
-      // if currentUser has and email redirect to the dashboard page
+      // If currentUser has and email redirect to the dashboard page
       router.push("/dashboard");
     }
   }, [currentUser]);
 
-  // if no email then default login is displayed
+  // If currentUser has no email display the login page
   return (
     <div className="Login">
       <h1>Login</h1>

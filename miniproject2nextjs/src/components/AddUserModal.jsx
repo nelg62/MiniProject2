@@ -1,4 +1,4 @@
-import { Box, Button, Container, Modal, Paper } from "@mui/material";
+import { Box, Button, Container, Modal } from "@mui/material";
 import { useState } from "react";
 import AddUserForm from "./AddUserForm";
 import { theme } from "../../themes/makingStyles";

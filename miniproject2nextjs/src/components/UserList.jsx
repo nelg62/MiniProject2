@@ -4,17 +4,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
-import { Box, Button, IconButton, Paper, Typography } from "@mui/material";
+import { Box, IconButton, Paper, Typography } from "@mui/material";
 import { useUserContext } from "@/context/UserContext";
 import BasicModal from "./Modal";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  UserStyles,
-  theme,
-  userListItemStyle,
-} from "../../themes/makingStyles";
 
 // Component to display a list of users
 export default function CheckboxListSecondary() {

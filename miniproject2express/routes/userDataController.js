@@ -1,21 +1,21 @@
 const axios = require("axios");
-// for getting random ids
+// Import uuid for generating random IDs
 const { v4: uuidv4 } = require("uuid");
 
 // -----------------------allUsers array-----------------------
 
-// array for storing all users external from api and created users
+// Array for storing all users (both external from API and created users)
 let allUsers = [];
 
 // -----------------------fetchExternalUsers function-----------------------
 
-// fetch external users from api
+// Fetch external users from API
 const fetchExternalUsers = async () => {
   try {
-    // axios store users in response variable
+    // Fetch users from external API using axios
     const response = await axios.get("http://dummyjson.com/users?limit=5");
 
-    // create copy of allUsers and the users from api and add to the all users
+    // Add fetched users to allUsers array
     allUsers = [...allUsers, ...response.data.users];
 
     // check for errors
@@ -26,15 +26,15 @@ const fetchExternalUsers = async () => {
 
 // -----------------------Call fetchExternalUsers-----------------------
 
-// get users from api when express server starts
+// Fetch users from API when server starts
 fetchExternalUsers();
 
 // -----------------------getUsers function-----------------------
 
-// get user function
+// Get all users
 const getUsers = async (req, res) => {
   try {
-    // send response so when calling get users it gets the users from the allUsers array names users:
+    // Respond with the users from the allUsers array
     res.json({ users: allUsers });
 
     // check for errors
@@ -46,40 +46,40 @@ const getUsers = async (req, res) => {
 
 // -----------------------getUserById function-----------------------
 
-// get user by ID
+// Get user by ID
 const getUserById = async (req, res) => {
-  // get id from frount end and store in variable userId
+  // Extract userId from request
   const userId = req.params.userId;
   console.log(`Received UserId ${userId}`);
 
-  //   find id if allUsers array matching userId
+  // Find the user with matching ID in the allUsers array
   const user = allUsers.find((user) => user.id === parseInt(userId, 10));
 
-  // send error if no user is found
+  // If user is not found respond with error
   if (!user) {
     return res.status(404).json({ result: `User ${userId} not found` });
   }
 
-  // send response with the user info that has the id found display result: user
+  // If user is found respond with the found user
   res.status(200).json({ result: user });
 };
 
 // -----------------------addUser function-----------------------
 
-// add a user
+// Add a new user
 const addUser = (req, res) => {
-  // deconstruct request body to get values from the form
+  // Deconstruct request body to get user details
   const { firstName, lastName, email, image, phone } = req.body;
 
-  //   check if required fields exist
+  //  Check if required fields exist
   if (!firstName || !lastName || !email) {
-    // if any field above do not exist then return 404 error with error message feilds requiled
+    // If required fields are missing respond with error
     return res.status(400).json({ error: "These fields are required" });
   }
 
-  //   create new user with data from req body and add id using uuidv4
+  //   Create a new user with a unique ID using uuid4
   const newUser = {
-    id: parseInt(uuidv4().split("-")[0], 16), // the 16 convert the sting from hex to decimal
+    id: parseInt(uuidv4().split("-")[0], 16), // Convert uuid from hex to decimal
     firstName,
     lastName,
     email,
@@ -87,35 +87,35 @@ const addUser = (req, res) => {
     phone,
   };
 
-  //   push the newely created user from newUser to allUsers array
+  //  Add the new user to allUsers array
   allUsers.push(newUser);
-  // send response of the newUser
+  // Respond with newly created user
   res.status(200).json(newUser);
   console.log(allUsers);
 };
 
 // -----------------------deleteUser function-----------------------
 
-// delete users
+// Delete a user
 const deleteUser = (req, res) => {
-  // find id of requested user and set to userId
+  // Extract userId from request
   const userId = req.params.userId;
   console.log(`Received UserId ${userId}`);
 
-  // Find the index of the user in the array
+  // Find the index of the user with matching ID in allUsers array
   const userIndex = allUsers.findIndex(
     (user) => user.id === parseInt(userId, 10) // the 10 part keeps the number as a decimal number
   );
 
-  // if the user id found (userIndex) is not equl to -1
+  // If the user id found (userIndex) is not equl to -1
   if (userIndex !== -1) {
     // Remove the user from the allUsers array using splice
     allUsers.splice(userIndex, 1);
     console.log(`User ${userId} deleted. Users array:`, allUsers);
-    // send confirmation message of user deletion
+    // Send confirmation message of user deletion
     res.status(200).json({ message: `User ${userId} deleted` });
 
-    // if user id (userIndex) is equal to -1
+    // If user id (userIndex) is equal to -1
   } else {
     console.error(`User ${userId} not found`);
     // If the user is not found, return a 404 status code and an error message
@@ -125,21 +125,21 @@ const deleteUser = (req, res) => {
 
 // -----------------------updateUser function-----------------------
 
-// update user
+// Update a user
 const updateUser = async (req, res) => {
-  // Extract userId, firstName, lastName, image, and phone from request body
+  // Extract userId from request
   const userId = req.params.userId;
-  // desconstuct request body
+  // Deconstruct request body to get updated user details
   const { firstName, lastName, email, image, phone } = req.body;
 
   console.log("Raw request body:", req.body);
 
-  // Find the index / id of the user in the allUsers array
+  // Find the index of the user with matching ID in allUsers array
   const userIndex = allUsers.findIndex(
     (user) => user.id === parseInt(userId, 10)
   );
 
-  // If the user is found meaning not equal to -1, update their information in allUsers array
+  // If the user is found update information in allUsers array
   if (userIndex !== -1) {
     allUsers[userIndex] = {
       ...allUsers[userIndex],

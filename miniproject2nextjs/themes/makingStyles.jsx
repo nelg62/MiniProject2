@@ -1,6 +1,5 @@
 "use client";
 import { createTheme } from "@mui/material";
-import zIndex from "@mui/material/styles/zIndex";
 
 export const UserStyles = createTheme({
   textColor: {

@@ -22,8 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { useUserContext } from "@/context/UserContext";
-import { Avatar, Button, ListItemAvatar, Modal } from "@mui/material";
-import EditUserForm from "./EditUserForm";
+import { Avatar, Button, ListItemAvatar } from "@mui/material";
 import BasicModal from "./Modal";
 
 function descendingComparator(a, b, orderBy) {
@@ -468,7 +467,6 @@ export default function EnhancedTable() {
                           aria-label="edit"
                           onClick={() => handleEditClick(row.id)}
                         >
-                          {" "}
                           View
                         </IconButton>
                         <IconButton
