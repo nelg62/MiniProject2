@@ -68,7 +68,7 @@ export default function EditUserForm({ userId }) {
     const updateUser = async (userId, updatedUser) => {
       try {
         const response = await fetch(
-          `http://localhost:3083/users/api/data/${userId}`,
+          `https://miniproject2-ergv.onrender.com/users/api/data/${userId}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

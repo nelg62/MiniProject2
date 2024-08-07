@@ -36,7 +36,10 @@ export const UserProvider = ({ children }) => {
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3083/users/api/data");
+        // const response = await fetch("http://localhost:3083/users/api/data");
+        const response = await fetch(
+          "https://miniproject2-ergv.onrender.com/users/api/data"
+        );
         const data = await response.json();
         setUsers(data.users);
       } catch (error) {

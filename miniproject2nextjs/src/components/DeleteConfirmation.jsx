@@ -47,7 +47,7 @@ export default function DeleteConfirmation({ open }) {
   const deleteUser = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`,
+        `https://miniproject2-ergv.onrender.com/users/api/data/${userId}`,
         {
           method: "DELETE",
         }

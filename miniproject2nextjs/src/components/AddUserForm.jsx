@@ -35,11 +35,14 @@ export default function AddUserForm({ closeModal }) {
 
       try {
         // send POST request to backend addUser route to add user
-        const response = await fetch("http://localhost:3083/users/api/data", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(user),
-        });
+        const response = await fetch(
+          "https://miniproject2-ergv.onrender.com/users/api/data",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user),
+          }
+        );
 
         // Change response to JSON and assign to newUser
         const newUser = await response.json();

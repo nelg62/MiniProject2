@@ -44,7 +44,7 @@ export default function BasicModal() {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3083/users/api/data/${userId}`
+        `https://miniproject2-ergv.onrender.com/users/api/data/${userId}`
       );
 
       const userData = await response.json();
