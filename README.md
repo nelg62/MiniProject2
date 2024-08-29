@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nelg62/MiniProject2">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <!-- <img src="images/logo.png" alt="Logo" width="80" height="80"> -->
   </a>
 
 <h3 align="center">Mini Project 2 User Management system / CRM</h3>
@@ -266,8 +266,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_ --
 
 ## Roadmap
 
-- [ X ] Host Frount end in cloud (Netlify)
-- [ X ] Host Backend in Cloud (Render)
+- [x] Host Frount end in cloud (Netlify)
+- [x] Host Backend in Cloud (Render)
 - [ ] Tidy code and make moble responsive
 - [ ] change styling to tailwind from MUI for mor customisability
 - [ ] add more features sutch as inventory list and linking items to people
