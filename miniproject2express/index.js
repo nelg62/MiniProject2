@@ -16,7 +16,8 @@ app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
     origin:
-      "https://66b42a2f65f0a100084b9e3a--miniproject2glenharding.netlify.app",
+      // "https://66b42a2f65f0a100084b9e3a--miniproject2glenharding.netlify.app",
+      "https://miniproject2glenharding.netlify.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type"],
   })
